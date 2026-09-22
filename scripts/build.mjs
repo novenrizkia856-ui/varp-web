@@ -10,11 +10,15 @@ const outputDirectory = resolve(projectRoot, "dist");
 const requiredFiles = [
   "index.html",
   "app.html",
+  "docs.html",
+  "assets/css/docs.css",
   "assets/css/base.css",
   "assets/css/custom.css",
   "assets/js/config.js",
   "assets/js/registry-abi.js",
-  "assets/js/demo-data.js",
+  "assets/js/profiles-data.js",
+  "assets/js/emblems.js",
+  "assets/js/docs.js",
   "assets/js/landing.js",
   "assets/js/app.js",
 ];
@@ -27,6 +31,7 @@ await rm(outputDirectory, { recursive: true, force: true });
 await mkdir(outputDirectory, { recursive: true });
 await cp(resolve(projectRoot, "index.html"), resolve(outputDirectory, "index.html"));
 await cp(resolve(projectRoot, "app.html"), resolve(outputDirectory, "app.html"));
+await cp(resolve(projectRoot, "docs.html"), resolve(outputDirectory, "docs.html"));
 await cp(resolve(projectRoot, "assets"), resolve(outputDirectory, "assets"), { recursive: true });
 
 await build({

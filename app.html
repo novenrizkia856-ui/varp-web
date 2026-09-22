@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="__variable_246ccd">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="assets/css/base.css">
     <link rel="stylesheet" href="assets/css/custom.css">
   </head>
-  <body class="app-shell production-app">
+  <body class="__variable_f367f3 __variable_ab7abf app-shell production-app">
     <nav class="app-nav" aria-label="Primary navigation">
       <div class="app-nav-inner">
         <a class="brand-link" href="index.html" aria-label="Varp home">
@@ -17,6 +17,7 @@
           <span class="font-coolvetica text-xl tracking-wide text-foreground">VARP</span>
         </a>
         <div class="app-nav-links wallet-actions">
+          <a class="nav-pill" href="docs.html">Docs</a>
           <span class="network-pill"><span class="live-dot" aria-hidden="true"></span>Robinhood Mainnet</span>
           <button class="nav-pill wallet-button" type="button" id="connect-browser">Browser Wallet</button>
           <button class="nav-pill nav-pill-accent wallet-button" type="button" id="connect-walletconnect">WalletConnect</button>
@@ -59,6 +60,8 @@
       <section class="workspace" aria-label="Varp workspace">
         <div class="tabs" role="tablist" aria-label="Registry views">
           <button class="tab-button" id="tab-profile" role="tab" aria-selected="true" aria-controls="view-profile" data-tab="profile">Rights Profile</button>
+          <button class="tab-button" id="tab-library" role="tab" aria-selected="false" aria-controls="view-library" data-tab="library">Profiles</button>
+          <button class="tab-button" id="tab-diff" role="tab" aria-selected="false" aria-controls="view-diff" data-tab="diff">Rights Diff</button>
           <button class="tab-button" id="tab-publisher" role="tab" aria-selected="false" aria-controls="view-publisher" data-tab="publisher">Publisher Console</button>
           <button class="tab-button" id="tab-admin" role="tab" aria-selected="false" aria-controls="view-admin" data-tab="admin">Admin</button>
         </div>
@@ -69,6 +72,30 @@
             <h2>Inspect a registered asset</h2>
             <p>Enter a token contract address above. Varp will read its anchored Rights Profile from Robinhood Chain.</p>
           </div>
+          <div class="library-inline">
+            <p class="panel-kicker">Or open a featured profile</p>
+            <div class="library-grid" data-profile-library></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-library" role="tabpanel" aria-labelledby="tab-library" data-view="library" hidden>
+          <div class="view-header">
+            <div><p class="panel-kicker">Profile library</p><h2 class="view-title">Featured Rights Profiles</h2></div>
+            <p class="view-description">Each profile covers ownership, economics, governance, transfer, DeFi, lifecycle, and sources.</p>
+          </div>
+          <div class="library-grid" data-profile-library></div>
+        </section>
+
+        <section class="view" id="view-diff" role="tabpanel" aria-labelledby="tab-diff" data-view="diff" hidden>
+          <div class="view-header">
+            <div><p class="panel-kicker">Rights Diff</p><h2 class="view-title">Compare two profiles</h2></div>
+            <p class="view-description">Fields are compared on the normalized vocabulary. Differences are highlighted.</p>
+          </div>
+          <div class="compare-controls">
+            <label class="compare-control"><span class="field-label">Profile A</span><select class="compare-select" id="diff-a"></select></label>
+            <label class="compare-control"><span class="field-label">Profile B</span><select class="compare-select" id="diff-b"></select></label>
+          </div>
+          <div class="compare-card panel" id="diff-result"></div>
         </section>
 
         <section class="view" id="view-publisher" role="tabpanel" aria-labelledby="tab-publisher" data-view="publisher" hidden>

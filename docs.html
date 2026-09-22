@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="en" class="__variable_246ccd">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Varp documentation. Rights Profiles, verification states, the onchain registry, and the API.">
+    <meta name="theme-color" content="#fff7ed">
+    <title>Varp Docs | Rights Intelligence for Tokenized Assets</title>
+    <link rel="icon" href="assets/images/varp-mark.webp" type="image/webp">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <link rel="stylesheet" href="assets/css/docs.css">
+  </head>
+  <body class="__variable_f367f3 __variable_ab7abf docs-shell">
+    <a class="docs-skip" href="#docs-main">Skip to content</a>
+    <header class="docs-header">
+      <div class="docs-header-inner">
+        <button class="docs-menu-button" type="button" aria-controls="docs-sidebar" aria-expanded="false" data-docs-menu>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span class="sr-only">Menu</span>
+        </button>
+        <a class="brand-link" href="index.html" aria-label="Varp home">
+          <img class="rounded-sm" src="assets/images/varp-mark.webp" alt="" width="28" height="28">
+          <span class="font-coolvetica text-xl tracking-wide text-foreground">VARP</span>
+          <span class="docs-brand-tag">Docs</span>
+        </a>
+        <div class="docs-search" role="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="search" placeholder="Search docs" aria-label="Search docs" autocomplete="off" data-docs-search>
+          <kbd>/</kbd>
+          <div class="docs-search-results" role="listbox" hidden data-docs-results></div>
+        </div>
+        <nav class="docs-header-links" aria-label="Site">
+          <a href="index.html">Home</a>
+          <a href="index.html#profiles">Profiles</a>
+          <a class="nav-pill nav-pill-accent" href="app.html">Open App</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="docs-layout">
+      <nav class="docs-sidebar" id="docs-sidebar" aria-label="Documentation">
+        <div class="docs-nav-group" data-nav-group>
+        <button class="docs-nav-heading" type="button" aria-expanded="true" aria-controls="nav-group-0">Introduction<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        <ul id="nav-group-0"><li><a class="docs-nav-link" href="#/introduction" data-nav-link="introduction">Introduction</a></li><li><a class="docs-nav-link" href="#/overview" data-nav-link="overview">Project Overview</a></li></ul>
+      </div>
+<div class="docs-nav-group" data-nav-group>
+        <button class="docs-nav-heading" type="button" aria-expanded="true" aria-controls="nav-group-1">Concepts<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        <ul id="nav-group-1"><li><a class="docs-nav-link" href="#/concepts/problem" data-nav-link="concepts/problem">Problem</a></li><li><a class="docs-nav-link" href="#/concepts/core-concepts" data-nav-link="concepts/core-concepts">Core Concepts</a></li><li><a class="docs-nav-link" href="#/concepts/rights-model" data-nav-link="concepts/rights-model">Rights Model</a></li><li><a class="docs-nav-link" href="#/concepts/verification-model" data-nav-link="concepts/verification-model">Verification Model</a></li><li><a class="docs-nav-link" href="#/concepts/rights-diff" data-nav-link="concepts/rights-diff">Rights Diff</a></li></ul>
+      </div>
+<div class="docs-nav-group" data-nav-group>
+        <button class="docs-nav-heading" type="button" aria-expanded="true" aria-controls="nav-group-2">System<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        <ul id="nav-group-2"><li><a class="docs-nav-link" href="#/system/how-varp-works" data-nav-link="system/how-varp-works">How Varp Works</a></li><li><a class="docs-nav-link" href="#/system/data-sources" data-nav-link="system/data-sources">Data Sources</a></li><li><a class="docs-nav-link" href="#/system/architecture" data-nav-link="system/architecture">System Architecture</a></li><li><a class="docs-nav-link" href="#/system/onchain-registry" data-nav-link="system/onchain-registry">Onchain Registry Concept</a></li></ul>
+      </div>
+<div class="docs-nav-group" data-nav-group>
+        <button class="docs-nav-heading" type="button" aria-expanded="true" aria-controls="nav-group-3">Product<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        <ul id="nav-group-3"><li><a class="docs-nav-link" href="#/product/dashboard" data-nav-link="product/dashboard">Dashboard</a></li><li><a class="docs-nav-link" href="#/product/api" data-nav-link="product/api">API</a></li><li><a class="docs-nav-link" href="#/product/use-cases" data-nav-link="product/use-cases">Use Cases</a></li></ul>
+      </div>
+<div class="docs-nav-group" data-nav-group>
+        <button class="docs-nav-heading" type="button" aria-expanded="true" aria-controls="nav-group-4">Trust<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        <ul id="nav-group-4"><li><a class="docs-nav-link" href="#/trust/security-and-limitations" data-nav-link="trust/security-and-limitations">Security, Trust &amp; Limitations</a></li></ul>
+      </div>
+<div class="docs-nav-group" data-nav-group>
+        <button class="docs-nav-heading" type="button" aria-expanded="true" aria-controls="nav-group-5">Reference<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        <ul id="nav-group-5"><li><a class="docs-nav-link" href="#/reference/status-reference" data-nav-link="reference/status-reference">Rights Status Reference</a></li><li><a class="docs-nav-link" href="#/reference/example-rights-profile" data-nav-link="reference/example-rights-profile">Example Rights Profile</a></li><li><a class="docs-nav-link" href="#/glossary" data-nav-link="glossary">Glossary</a></li></ul>
+      </div>
+      </nav>
+      <main class="docs-main" id="docs-main" tabindex="-1">
+        <article class="docs-page" id="page-introduction" data-page="introduction" data-title="Varp" data-group="Introduction">
+      <div class="docs-page-body">
+        <nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="#/introduction">Docs</a><span>/</span><span>Introduction</span><span>/</span><span aria-current="page">Introduction</span></nav>
+        <h1 class="docs-title">Varp</h1>
+        <p class="docs-updated">Page last updated: September 21, 2026</p>
+        <div class="docs-prose"><p><strong>Varp is a rights intelligence layer for tokenized assets.</strong></p>
+<p>It answers one simple question:</p>
+<blockquote class="doc-callout"><strong>What does this token actually give its holder?</strong></blockquote>
+<p>A token balance alone does not explain the legal, economic, governance, transfer, redemption, or DeFi rights attached to the asset. Varp combines <strong>onchain evidence</strong> with <strong>authoritative offchain documentation</strong> and converts that information into a standardized, machine readable <strong>Rights Profile</strong>.</p>
+<p>Varp uses a deliberately focused product scope:</p>
+<ul><li><strong>Asset class:</strong> tokenized stocks</li><li><strong>Chain:</strong> RH Chain</li><li><strong>Supported set:</strong> 20 to 50 tokenized stock assets</li><li><strong>Core output:</strong> a standardized Rights Profile</li><li><strong>Interfaces:</strong> dashboard + REST API</li><li><strong>Verification states:</strong> Verified, Partially Verified, Unverified, Conflict</li><li><strong>Onchain layer:</strong> a minimal non custodial registry that anchors profile versions and verification metadata</li></ul>
+<p>Varp is <strong>not</strong> a trading venue, wallet, broker, custodian, token issuer, DEX, lending protocol, or legal advice engine.</p>
+<p>Its purpose is information and verification infrastructure.</p>
+<h2 id="introduction--core-idea"><a class="doc-anchor" href="#introduction--core-idea" aria-hidden="true" tabindex="-1">#</a>Core idea</h2>
+<div class="doc-code" data-lang="text"><div class="doc-code-bar"><span>text</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code>Token Address
+     |
+     v
+Onchain Evidence ---------+
+                          |
+                          v
+                   Rights Normalization
+                          |
+                          +------&gt; Rights Profile
+                          |
+Offchain Documentation ---+
+                          |
+                          v
+                  Verification Engine
+                          |
+                          v
+             VERIFIED / PARTIAL /
+              UNVERIFIED / CONFLICT</code></pre></div>
+<p>The result is a simple interface for wallets, protocols, exchanges, issuers, developers, and users who need to understand what a tokenized asset represents before they interact with it.</p></div>
+        <nav class="docs-pager" aria-label="Pagination">
+          <span></span>
+          <a class="docs-pager-link is-next" href="#/overview"><span><small>Next</small>Project Overview</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </nav>
+      </div>
+      <aside class="docs-toc" aria-label="On this page"><p class="docs-toc-title">On this page</p><ul><li class="toc-level-2"><a href="#introduction--core-idea" data-toc-link="introduction--core-idea">Core idea</a></li></ul></aside>
+    </article>
+<article class="docs-page" id="page-overview" data-page="overview" data-title="Project Overview" data-group="Introduction">
+      <div class="docs-page-body">
+        <nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="#/introduction">Docs</a><span>/</span><span>Introduction</span><span>/</span><span aria-current="page">Project Overview</span></nav>
+        <h1 class="docs-title">Project Overview</h1>
+        <p class="docs-updated">Page last updated: September 21, 2026</p>
+        <div class="docs-prose"><p>Varp is a <strong>machine readable rights layer for tokenized assets</strong>.</p>
+<p>A normal blockchain interface can tell a user:</p>
+<ul><li>the token contract address,</li><li>the wallet that holds it,</li><li>the token balance,</li><li>and some contract level metadata.</li></ul>
+<p>That is not enough to explain what the holder actually owns or is entitled to.</p>
+<p>Two tokens that reference the same underlying stock can still differ materially in:</p>
+<ul><li>ownership structure,</li><li>dividend rights,</li><li>voting rights,</li><li>redemption rights,</li><li>transfer restrictions,</li><li>KYC requirements,</li><li>geographic eligibility,</li><li>collateral eligibility,</li><li>DeFi compatibility,</li><li>corporate action treatment,</li><li>and issuer or custodian obligations.</li></ul>
+<p>Varp creates one normalized <strong>Rights Profile</strong> for each supported tokenized asset.</p>
+<h2 id="overview--product-definition"><a class="doc-anchor" href="#overview--product-definition" aria-hidden="true" tabindex="-1">#</a>Product definition</h2>
+<p>Varp is an API and verification layer that translates tokenized assets into:</p>
+<ul><li>machine readable rights,</li><li>restrictions,</li><li>ownership information,</li><li>verification status,</li><li>supporting sources,</li><li>and historical changes.</li></ul>
+<p>It combines:</p>
+<div class="doc-code" data-lang="text"><div class="doc-code-bar"><span>text</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code>Legal / Economic Context
+          +
+Asset Documentation
+          +
+Onchain Contract Evidence
+          =
+Standardized Rights Intelligence</code></pre></div>
+<h2 id="overview--core-experience"><a class="doc-anchor" href="#overview--core-experience" aria-hidden="true" tabindex="-1">#</a>Core experience</h2>
+<p>The simplest Varp experience is:</p>
+<blockquote class="doc-callout"><strong>Paste a token address. Know what it represents.</strong></blockquote>
+<p>A result should immediately answer:</p>
+<ul><li>What is the underlying asset?</li><li>Is ownership direct, indirect, beneficial, synthetic, or unknown?</li><li>Does the holder receive dividends or other distributions?</li><li>Does the holder have voting rights?</li><li>Can the token be redeemed?</li><li>Is transfer permissioned?</li><li>Is KYC or wallet whitelisting required?</li><li>Can the token interact with smart contracts?</li><li>Can it be used as collateral?</li><li>Are there inconsistencies between documentation and onchain behavior?</li><li>When was the information last verified?</li></ul></div>
+        <nav class="docs-pager" aria-label="Pagination">
+          <a class="docs-pager-link" href="#/introduction"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span><small>Previous</small>Introduction</span></a>
+          <a class="docs-pager-link is-next" href="#/concepts/problem"><span><small>Next</small>Problem</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </nav>
+      </div>
+      <aside class="docs-toc" aria-label="On this page"><p class="docs-toc-title">On this page</p><ul><li class="toc-level-2"><a href="#overview--product-definition" data-toc-link="overview--product-definition">Product definition</a></li><li class="toc-level-2"><a href="#overview--core-experience" data-toc-link="overview--core-experience">Core experience</a></li></ul></aside>
+    </article>
+<article class="docs-page" id="page-concepts/problem" data-page="concepts/problem" data-title="Problem" data-group="Concepts">
+      <div class="docs-page-body">
+        <nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="#/introduction">Docs</a><span>/</span><span>Concepts</span><span>/</span><span aria-current="page">Problem</span></nav>
+        <h1 class="docs-title">Problem</h1>
+        <p class="docs-updated">Page last updated: September 21, 2026</p>
+        <div class="docs-prose"><p>Tokenized assets look simple onchain:</p>
+<div class="doc-code" data-lang="text"><div class="doc-code-bar"><span>text</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code>Token -&gt; Wallet -&gt; Balance</code></pre></div>
+<p>But a balance does not define the holder's real rights.</p>
+<p>The token contract may expose technical behavior, while the legal meaning of the asset is defined elsewhere: issuer documentation, offering documents, custodian terms, eligibility rules, redemption terms, or corporate action policies.</p>
+<h2 id="concepts-problem--the-information-gap"><a class="doc-anchor" href="#concepts-problem--the-information-gap" aria-hidden="true" tabindex="-1">#</a>The information gap</h2>
+<p>A user may see two stock tokens with similar names and assume they provide the same exposure. In reality, one may represent a direct issuer sponsored security while another may be a custodial representation or synthetic exposure.</p>
+<p>That difference can change:</p>
+<ul><li>who legally owns the underlying asset,</li><li>whether dividends flow to the holder,</li><li>whether voting is available,</li><li>whether the asset can be redeemed,</li><li>whether transfers require permission,</li><li>whether the token can be sent to arbitrary smart contracts,</li><li>and whether the token is suitable for DeFi integrations.</li></ul>
+<h2 id="concepts-problem--varp-s-role"><a class="doc-anchor" href="#concepts-problem--varp-s-role" aria-hidden="true" tabindex="-1">#</a>Varp's role</h2>
+<p>Varp does not try to create these rights.</p>
+<p>Varp <strong>reads, organizes, normalizes, and verifies</strong> them.</p>
+<p>The product exists to convert fragmented technical and legal information into one standard answer that software and humans can use.</p></div>
+        <nav class="docs-pager" aria-label="Pagination">
+          <a class="docs-pager-link" href="#/overview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span><small>Previous</small>Project Overview</span></a>
+          <a class="docs-pager-link is-next" href="#/concepts/core-concepts"><span><small>Next</small>Core Concepts</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </nav>
+      </div>
+      <aside class="docs-toc" aria-label="On this page"><p class="docs-toc-title">On this page</p><ul><li class="toc-level-2"><a href="#concepts-problem--the-information-gap" data-toc-link="concepts-problem--the-information-gap">The information gap</a></li><li class="toc-level-2"><a href="#concepts-problem--varp-s-role" data-toc-link="concepts-problem--varp-s-role">Varp's role</a></li></ul></aside>
+    </article>
+<article class="docs-page" id="page-concepts/core-concepts" data-page="concepts/core-concepts" data-title="Core Concepts" data-group="Concepts">
+      <div class="docs-page-body">
+        <nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="#/introduction">Docs</a><span>/</span><span>Concepts</span><span>/</span><span aria-current="page">Core Concepts</span></nav>
+        <h1 class="docs-title">Core Concepts</h1>
+        <p class="docs-updated">Page last updated: September 21, 2026</p>
+        <div class="docs-prose"><p>Varp is built around five simple concepts.</p>
+<h2 id="concepts-core-concepts--1-asset-identity"><a class="doc-anchor" href="#concepts-core-concepts--1-asset-identity" aria-hidden="true" tabindex="-1">#</a>1. Asset Identity</h2>
+<p>Every supported asset starts with an onchain identity:</p>
+<ul><li>chain,</li><li>token contract address,</li><li>token standard,</li><li>symbol and name,</li><li>underlying asset,</li><li>asset type.</li></ul>
+<p>The contract address is the primary lookup input.</p>
+<h2 id="concepts-core-concepts--2-rights-profile"><a class="doc-anchor" href="#concepts-core-concepts--2-rights-profile" aria-hidden="true" tabindex="-1">#</a>2. Rights Profile</h2>
+<p>A Rights Profile is the normalized description of what the token represents and what the holder can or cannot do.</p>
+<p>It contains ownership, economic, governance, transfer, DeFi, lifecycle, and verification information.</p>
+<h2 id="concepts-core-concepts--3-evidence"><a class="doc-anchor" href="#concepts-core-concepts--3-evidence" aria-hidden="true" tabindex="-1">#</a>3. Evidence</h2>
+<p>Every important field should be supported by evidence.</p>
+<p>Varp uses two evidence families:</p>
+<ul><li><strong>Onchain evidence</strong>: contract code, state, permissions, roles, events, transfer controls, upgradeability, and related technical behavior.</li><li><strong>Offchain evidence</strong>: issuer documents, custody terms, offering documents, legal disclosures, eligibility requirements, redemption terms, and corporate action documentation.</li></ul>
+<h2 id="concepts-core-concepts--4-verification"><a class="doc-anchor" href="#concepts-core-concepts--4-verification" aria-hidden="true" tabindex="-1">#</a>4. Verification</h2>
+<p>Varp does not treat all information as equally certain.</p>
+<p>Each profile receives a verification state:</p>
+<ul><li><code>VERIFIED</code></li><li><code>PARTIALLY_VERIFIED</code></li><li><code>UNVERIFIED</code></li><li><code>CONFLICT</code></li></ul>
+<h2 id="concepts-core-concepts--5-change-history"><a class="doc-anchor" href="#concepts-core-concepts--5-change-history" aria-hidden="true" tabindex="-1">#</a>5. Change History</h2>
+<p>Rights can change.</p>
+<p>Contracts can be upgraded. Admin roles can change. Issuer terms can be updated. Transfer restrictions can be enabled or disabled.</p>
+<p>Varp therefore treats rights as versioned information, not a permanent label.</p></div>
+        <nav class="docs-pager" aria-label="Pagination">
+          <a class="docs-pager-link" href="#/concepts/problem"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span><small>Previous</small>Problem</span></a>
+          <a class="docs-pager-link is-next" href="#/concepts/rights-model"><span><small>Next</small>Rights Model</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </nav>
+      </div>
+      <aside class="docs-toc" aria-label="On this page"><p class="docs-toc-title">On this page</p><ul><li class="toc-level-2"><a href="#concepts-core-concepts--1-asset-identity" data-toc-link="concepts-core-concepts--1-asset-identity">1. Asset Identity</a></li><li class="toc-level-2"><a href="#concepts-core-concepts--2-rights-profile" data-toc-link="concepts-core-concepts--2-rights-profile">2. Rights Profile</a></li><li class="toc-level-2"><a href="#concepts-core-concepts--3-evidence" data-toc-link="concepts-core-concepts--3-evidence">3. Evidence</a></li><li class="toc-level-2"><a href="#concepts-core-concepts--4-verification" data-toc-link="concepts-core-concepts--4-verification">4. Verification</a></li><li class="toc-level-2"><a href="#concepts-core-concepts--5-change-history" data-toc-link="concepts-core-concepts--5-change-history">5. Change History</a></li></ul></aside>
+    </article>
+<article class="docs-page" id="page-concepts/rights-model" data-page="concepts/rights-model" data-title="Rights Model" data-group="Concepts">
+      <div class="docs-page-body">
+        <nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="#/introduction">Docs</a><span>/</span><span>Concepts</span><span>/</span><span aria-current="page">Rights Model</span></nav>
+        <h1 class="docs-title">Rights Model</h1>
+        <p class="docs-updated">Page last updated: September 21, 2026</p>
+        <div class="docs-prose"><p>The Rights Model is the common language used by Varp.</p>
+<p>The first version intentionally uses a small set of categories so the system stays understandable and practical.</p>
+<h2 id="concepts-rights-model--ownership"><a class="doc-anchor" href="#concepts-rights-model--ownership" aria-hidden="true" tabindex="-1">#</a>Ownership</h2>
+<p>Describes the relationship between the token holder and the underlying asset.</p>
+<p>Possible values:</p>
+<ul><li><strong>Direct ownership</strong>: the token itself represents direct ownership under the relevant structure.</li><li><strong>Indirect ownership</strong>: the holder owns a token whose rights are mediated through an issuer, custodian, SPV, or similar structure.</li><li><strong>Beneficial interest</strong>: the holder has an economic or beneficial claim without direct registered ownership.</li><li><strong>Synthetic exposure</strong>: the token tracks exposure without representing ownership of the underlying asset.</li><li><strong>Unknown</strong>: the available evidence is insufficient.</li></ul>
+<h2 id="concepts-rights-model--economic-rights"><a class="doc-anchor" href="#concepts-rights-model--economic-rights" aria-hidden="true" tabindex="-1">#</a>Economic Rights</h2>
+<p>Economic rights may include:</p>
+<ul><li>dividends,</li><li>interest,</li><li>yield,</li><li>redemption,</li><li>distributions,</li><li>other cash flow rights.</li></ul>
+<p>A right can be present, absent, conditional, restricted, or unknown.</p>
+<h2 id="concepts-rights-model--governance-rights"><a class="doc-anchor" href="#concepts-rights-model--governance-rights" aria-hidden="true" tabindex="-1">#</a>Governance Rights</h2>
+<p>Governance information may include:</p>
+<ul><li>voting rights,</li><li>governance participation,</li><li>corporate action participation.</li></ul>
+<p>A token can provide economic exposure without voting rights.</p>
+<h2 id="concepts-rights-model--transfer-rights"><a class="doc-anchor" href="#concepts-rights-model--transfer-rights" aria-hidden="true" tabindex="-1">#</a>Transfer Rights</h2>
+<p>Transfer rules describe who can receive or move the token.</p>
+<p>Important states include:</p>
+<ul><li>permissionless,</li><li>permissioned,</li><li>whitelist required,</li><li>geographic restrictions,</li><li>investor eligibility restrictions,</li><li>frozen or paused transfers.</li></ul>
+<h2 id="concepts-rights-model--defi-rights-and-compatibility"><a class="doc-anchor" href="#concepts-rights-model--defi-rights-and-compatibility" aria-hidden="true" tabindex="-1">#</a>DeFi Rights and Compatibility</h2>
+<p>A token can exist on a smart contract chain while still being unsuitable for permissionless DeFi.</p>
+<p>Varp records whether the asset appears to be:</p>
+<ul><li>transferable to arbitrary smart contracts,</li><li>collateralizable,</li><li>lendable,</li><li>swappable,</li><li>permissionless DeFi compatible.</li></ul>
+<p>These fields should not be inferred from token standard compatibility alone.</p>
+<h2 id="concepts-rights-model--lifecycle"><a class="doc-anchor" href="#concepts-rights-model--lifecycle" aria-hidden="true" tabindex="-1">#</a>Lifecycle</h2>
+<p>A profile can describe the asset's current lifecycle state:</p>
+<ul><li><code>ACTIVE</code></li><li><code>RESTRICTED</code></li><li><code>SUSPENDED</code></li><li><code>CORPORATE_ACTION</code></li><li><code>REDEEMING</code></li><li><code>REDEEMED</code></li></ul>
+<p>Lifecycle is separate from verification. An asset can be fully verified and still be suspended.</p></div>
+        <nav class="docs-pager" aria-label="Pagination">
+          <a class="docs-pager-link" href="#/concepts/core-concepts"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span><small>Previous</small>Core Concepts</span></a>
+          <a class="docs-pager-link is-next" href="#/concepts/verification-model"><span><small>Next</small>Verification Model</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </nav>
+      </div>
+      <aside class="docs-toc" aria-label="On this page"><p class="docs-toc-title">On this page</p><ul><li class="toc-level-2"><a href="#concepts-rights-model--ownership" data-toc-link="concepts-rights-model--ownership">Ownership</a></li><li class="toc-level-2"><a href="#concepts-rights-model--economic-rights" data-toc-link="concepts-rights-model--economic-rights">Economic Rights</a></li><li class="toc-level-2"><a href="#concepts-rights-model--governance-rights" data-toc-link="concepts-rights-model--governance-rights">Governance Rights</a></li><li class="toc-level-2"><a href="#concepts-rights-model--transfer-rights" data-toc-link="concepts-rights-model--transfer-rights">Transfer Rights</a></li><li class="toc-level-2"><a href="#concepts-rights-model--defi-rights-and-compatibility" data-toc-link="concepts-rights-model--defi-rights-and-compatibility">DeFi Rights and Compatibility</a></li><li class="toc-level-2"><a href="#concepts-rights-model--lifecycle" data-toc-link="concepts-rights-model--lifecycle">Lifecycle</a></li></ul></aside>
+    </article>
+<article class="docs-page" id="page-concepts/verification-model" data-page="concepts/verification-model" data-title="Verification Model" data-group="Concepts">
+      <div class="docs-page-body">
+        <nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="#/introduction">Docs</a><span>/</span><span>Concepts</span><span>/</span><span aria-current="page">Verification Model</span></nav>
+        <h1 class="docs-title">Verification Model</h1>
+        <p class="docs-updated">Page last updated: September 21, 2026</p>
+        <div class="docs-prose"><p>Varp uses explicit verification states instead of calling every indexed asset &quot;verified.&quot;</p>
+<h2 id="concepts-verification-model--verified"><a class="doc-anchor" href="#concepts-verification-model--verified" aria-hidden="true" tabindex="-1">#</a>VERIFIED</h2>
+<p>Use when the important onchain behavior and authoritative documentation agree and the core rights are sufficiently supported.</p>
+<p>Typical example:</p>
+<ul><li>documentation requires whitelisted transfers,</li><li>the contract enforces an allowlist,</li><li>issuer or custodian terms confirm the restriction,</li><li>no material contradiction is found.</li></ul>
+<h2 id="concepts-verification-model--partially-verified"><a class="doc-anchor" href="#concepts-verification-model--partially-verified" aria-hidden="true" tabindex="-1">#</a>PARTIALLY_VERIFIED</h2>
+<p>Use when some important rights are confirmed but meaningful gaps remain.</p>
+<p>Example:</p>
+<ul><li>transfer restrictions are verified onchain,</li><li>dividend rights are documented,</li><li>redemption mechanics are unclear.</li></ul>
+<h2 id="concepts-verification-model--unverified"><a class="doc-anchor" href="#concepts-verification-model--unverified" aria-hidden="true" tabindex="-1">#</a>UNVERIFIED</h2>
+<p>Use when authoritative information is insufficient.</p>
+<p>This state means Varp has not obtained enough reliable evidence to make a strong claim.</p>
+<h2 id="concepts-verification-model--conflict"><a class="doc-anchor" href="#concepts-verification-model--conflict" aria-hidden="true" tabindex="-1">#</a>CONFLICT</h2>
+<p>Use when important evidence sources disagree.</p>
+<p>Example:</p>
+<div class="doc-code" data-lang="text"><div class="doc-code-bar"><span>text</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code>Documentation:
+Transfers require whitelisted wallets.
+
+Observed onchain behavior:
+The contract currently allows unrestricted transfers.</code></pre></div>
+<p>This is not a small detail. A conflict can change how a wallet, protocol, exchange, or user should interpret the token.</p>
+<h2 id="concepts-verification-model--verification-principle"><a class="doc-anchor" href="#concepts-verification-model--verification-principle" aria-hidden="true" tabindex="-1">#</a>Verification principle</h2>
+<p>Varp verifies <strong>claims about rights</strong>, not the commercial quality of an asset.</p>
+<p>A <code>VERIFIED</code> profile does not mean:</p>
+<ul><li>the asset is safe,</li><li>the issuer is solvent,</li><li>the token is a good investment,</li><li>a regulator has approved it,</li><li>legal enforceability is guaranteed in every jurisdiction.</li></ul>
+<p>It only means the indexed rights profile is well supported by the evidence available to Varp.</p></div>
+        <nav class="docs-pager" aria-label="Pagination">
+          <a class="docs-pager-link" href="#/concepts/rights-model"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span><small>Previous</small>Rights Model</span></a>
+          <a class="docs-pager-link is-next" href="#/concepts/rights-diff"><span><small>Next</small>Rights Diff</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </nav>
+      </div>
+      <aside class="docs-toc" aria-label="On this page"><p class="docs-toc-title">On this page</p><ul><li class="toc-level-2"><a href="#concepts-verification-model--verified" data-toc-link="concepts-verification-model--verified">VERIFIED</a></li><li class="toc-level-2"><a href="#concepts-verification-model--partially-verified" data-toc-link="concepts-verification-model--partially-verified">PARTIALLY_VERIFIED</a></li><li class="toc-level-2"><a href="#concepts-verification-model--unverified" data-toc-link="concepts-verification-model--unverified">UNVERIFIED</a></li><li class="toc-level-2"><a href="#concepts-verification-model--conflict" data-toc-link="concepts-verification-model--conflict">CONFLICT</a></li><li class="toc-level-2"><a href="#concepts-verification-model--verification-principle" data-toc-link="concepts-verification-model--verification-principle">Verification principle</a></li></ul></aside>
+    </article>
+<article class="docs-page" id="page-concepts/rights-diff" data-page="concepts/rights-diff" data-title="Rights Diff" data-group="Concepts">
+      <div class="docs-page-body">
+        <nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="#/introduction">Docs</a><span>/</span><span>Concepts</span><span>/</span><span aria-current="page">Rights Diff</span></nav>
+        <h1 class="docs-title">Rights Diff</h1>
+        <p class="docs-updated">Page last updated: September 21, 2026</p>
+        <div class="docs-prose"><p>Rights Diff compares two or more tokenized assets using the same normalized rights vocabulary.</p>
+<h2 id="concepts-rights-diff--why-it-matters"><a class="doc-anchor" href="#concepts-rights-diff--why-it-matters" aria-hidden="true" tabindex="-1">#</a>Why it matters</h2>
+<p>Users should not need to read dozens of documents to understand that two tokens referencing the same underlying stock have different rights.</p>
+<p>A comparison can make the difference obvious.</p>
+<div class="doc-table"><table><thead><tr><th>Right</th><th>Token A</th><th>Token B</th></tr></thead><tbody><tr><td>Ownership</td><td>Direct</td><td>Indirect</td></tr><tr><td>Voting</td><td>Yes</td><td>No</td></tr><tr><td>Dividend</td><td>Yes</td><td>Yes</td></tr><tr><td>Transfer</td><td>Permissioned</td><td>Permissionless</td></tr><tr><td>Redemption</td><td>Yes</td><td>No</td></tr><tr><td>DeFi</td><td>Restricted</td><td>Supported</td></tr></tbody></table></div>
+<h2 id="concepts-rights-diff--comparison-rules"><a class="doc-anchor" href="#concepts-rights-diff--comparison-rules" aria-hidden="true" tabindex="-1">#</a>Comparison rules</h2>
+<p>Rights Diff compares normalized fields, not token names or marketing descriptions.</p>
+<p>The output should highlight:</p>
+<ul><li>equal rights,</li><li>different rights,</li><li>restrictions,</li><li>unknown fields,</li><li>verification differences,</li><li>source conflicts.</li></ul>
+<h2 id="concepts-rights-diff--intended-users"><a class="doc-anchor" href="#concepts-rights-diff--intended-users" aria-hidden="true" tabindex="-1">#</a>Intended users</h2>
+<p>Rights Diff is especially useful for:</p>
+<ul><li>wallets,</li><li>exchanges,</li><li>DeFi protocols,</li><li>asset issuers,</li><li>developers,</li><li>users evaluating alternative tokenized representations.</li></ul></div>
+        <nav class="docs-pager" aria-label="Pagination">
+          <a class="docs-pager-link" href="#/concepts/verification-model"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span><small>Previous</small>Verification Model</span></a>
+          <a class="docs-pager-link is-next" href="#/system/how-varp-works"><span><small>Next</small>How Varp Works</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </nav>
+      </div>
+      <aside class="docs-toc" aria-label="On this page"><p class="docs-toc-title">On this page</p><ul><li class="toc-level-2"><a href="#concepts-rights-diff--why-it-matters" data-toc-link="concepts-rights-diff--why-it-matters">Why it matters</a></li><li class="toc-level-2"><a href="#concepts-rights-diff--comparison-rules" data-toc-link="concepts-rights-diff--comparison-rules">Comparison rules</a></li><li class="toc-level-2"><a href="#concepts-rights-diff--intended-users" data-toc-link="concepts-rights-diff--intended-users">Intended users</a></li></ul></aside>
+    </article>
+<article class="docs-page" id="page-system/how-varp-works" data-page="system/how-varp-works" data-title="How Varp Works" data-group="System">
+      <div class="docs-page-body">
+        <nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="#/introduction">Docs</a><span>/</span><span>System</span><span>/</span><span aria-current="page">How Varp Works</span></nav>
+        <h1 class="docs-title">How Varp Works</h1>
+        <p class="docs-updated">Page last updated: September 21, 2026</p>
+        <div class="docs-prose"><p>Varp follows a simple evidence to rights pipeline.</p>
+<h2 id="system-how-varp-works--step-1-asset-lookup"><a class="doc-anchor" href="#system-how-varp-works--step-1-asset-lookup" aria-hidden="true" tabindex="-1">#</a>Step 1: Asset lookup</h2>
+<p>The user submits:</p>
+<div class="doc-code" data-lang="text"><div class="doc-code-bar"><span>text</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code>chain + token contract address</code></pre></div>
+<p>Varp resolves the asset identity and loads any existing profile.</p>
+<h2 id="system-how-varp-works--step-2-onchain-evidence"><a class="doc-anchor" href="#system-how-varp-works--step-2-onchain-evidence" aria-hidden="true" tabindex="-1">#</a>Step 2: Onchain evidence</h2>
+<p>Varp reads relevant blockchain data such as:</p>
+<ul><li>token standard,</li><li>contract state,</li><li>transfer restrictions,</li><li>whitelist or allowlist behavior,</li><li>pause and freeze mechanisms,</li><li>mint and burn permissions,</li><li>admin roles,</li><li>ownership,</li><li>upgradeability,</li><li>relevant events.</li></ul>
+<h2 id="system-how-varp-works--step-3-offchain-evidence"><a class="doc-anchor" href="#system-how-varp-works--step-3-offchain-evidence" aria-hidden="true" tabindex="-1">#</a>Step 3: Offchain evidence</h2>
+<p>Varp indexes authoritative documentation such as:</p>
+<ul><li>issuer documentation,</li><li>offering documents,</li><li>terms and conditions,</li><li>custodian documentation,</li><li>legal disclosures,</li><li>corporate action documentation,</li><li>eligibility rules.</li></ul>
+<h2 id="system-how-varp-works--step-4-rights-normalization"><a class="doc-anchor" href="#system-how-varp-works--step-4-rights-normalization" aria-hidden="true" tabindex="-1">#</a>Step 4: Rights normalization</h2>
+<p>The Rights Engine converts raw observations into a common schema.</p>
+<p>Example:</p>
+<div class="doc-code" data-lang="text"><div class="doc-code-bar"><span>text</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code>Document says: only approved investors may receive the token.
+Contract says: transfer recipient must pass allowlist check.
+
+Normalized result:
+transfer.permissioned = true
+transfer.whitelist_required = true</code></pre></div>
+<h2 id="system-how-varp-works--step-5-verification"><a class="doc-anchor" href="#system-how-varp-works--step-5-verification" aria-hidden="true" tabindex="-1">#</a>Step 5: Verification</h2>
+<p>The Verification Engine checks whether the major evidence sources agree.</p>
+<p>It then assigns:</p>
+<ul><li>Verified,</li><li>Partially Verified,</li><li>Unverified,</li><li>or Conflict.</li></ul>
+<h2 id="system-how-varp-works--step-6-profile-delivery"><a class="doc-anchor" href="#system-how-varp-works--step-6-profile-delivery" aria-hidden="true" tabindex="-1">#</a>Step 6: Profile delivery</h2>
+<p>The final Rights Profile is exposed through:</p>
+<ul><li>the Varp dashboard,</li><li>the Varp API,</li><li>comparison views,</li><li>and optionally an onchain profile anchor.</li></ul>
+<h2 id="system-how-varp-works--step-7-change-tracking"><a class="doc-anchor" href="#system-how-varp-works--step-7-change-tracking" aria-hidden="true" tabindex="-1">#</a>Step 7: Change tracking</h2>
+<p>When important evidence changes, Varp creates a new profile version and records the change.</p>
+<div class="doc-code" data-lang="text"><div class="doc-code-bar"><span>text</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code>New contract state
+        or
+New authoritative document
+        |
+        v
+Re-evaluate profile
+        |
+        v
+New version + change record</code></pre></div></div>
+        <nav class="docs-pager" aria-label="Pagination">
+          <a class="docs-pager-link" href="#/concepts/rights-diff"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span><small>Previous</small>Rights Diff</span></a>
+          <a class="docs-pager-link is-next" href="#/system/data-sources"><span><small>Next</small>Data Sources</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </nav>
+      </div>
+      <aside class="docs-toc" aria-label="On this page"><p class="docs-toc-title">On this page</p><ul><li class="toc-level-2"><a href="#system-how-varp-works--step-1-asset-lookup" data-toc-link="system-how-varp-works--step-1-asset-lookup">Step 1: Asset lookup</a></li><li class="toc-level-2"><a href="#system-how-varp-works--step-2-onchain-evidence" data-toc-link="system-how-varp-works--step-2-onchain-evidence">Step 2: Onchain evidence</a></li><li class="toc-level-2"><a href="#system-how-varp-works--step-3-offchain-evidence" data-toc-link="system-how-varp-works--step-3-offchain-evidence">Step 3: Offchain evidence</a></li><li class="toc-level-2"><a href="#system-how-varp-works--step-4-rights-normalization" data-toc-link="system-how-varp-works--step-4-rights-normalization">Step 4: Rights normalization</a></li><li class="toc-level-2"><a href="#system-how-varp-works--step-5-verification" data-toc-link="system-how-varp-works--step-5-verification">Step 5: Verification</a></li><li class="toc-level-2"><a href="#system-how-varp-works--step-6-profile-delivery" data-toc-link="system-how-varp-works--step-6-profile-delivery">Step 6: Profile delivery</a></li><li class="toc-level-2"><a href="#system-how-varp-works--step-7-change-tracking" data-toc-link="system-how-varp-works--step-7-change-tracking">Step 7: Change tracking</a></li></ul></aside>
+    </article>
+<article class="docs-page" id="page-system/data-sources" data-page="system/data-sources" data-title="Data Sources" data-group="System">
+      <div class="docs-page-body">
+        <nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="#/introduction">Docs</a><span>/</span><span>System</span><span>/</span><span aria-current="page">Data Sources</span></nav>
+        <h1 class="docs-title">Data Sources</h1>
+        <p class="docs-updated">Page last updated: September 21, 2026</p>
+        <div class="docs-prose"><p>Varp combines onchain and offchain sources because neither layer is sufficient by itself.</p>
+<h2 id="system-data-sources--onchain-sources"><a class="doc-anchor" href="#system-data-sources--onchain-sources" aria-hidden="true" tabindex="-1">#</a>Onchain Sources</h2>
+<p>The blockchain provides technical evidence about how the token currently behaves.</p>
+<p>Varp may inspect:</p>
+<ul><li>contract address,</li><li>token standard,</li><li>transfer logic,</li><li>allowlist or whitelist checks,</li><li>pause controls,</li><li>freeze controls,</li><li>mint permissions,</li><li>burn permissions,</li><li>role based access control,</li><li>owner/admin addresses,</li><li>proxy and upgradeability configuration,</li><li>emitted events,</li><li>relevant contract state.</li></ul>
+<h2 id="system-data-sources--offchain-sources"><a class="doc-anchor" href="#system-data-sources--offchain-sources" aria-hidden="true" tabindex="-1">#</a>Offchain Sources</h2>
+<p>Documents define legal and economic meaning that may not exist in contract storage.</p>
+<p>Varp may index:</p>
+<ul><li>issuer documentation,</li><li>offering documents,</li><li>terms and conditions,</li><li>custodian documentation,</li><li>legal disclosures,</li><li>investor eligibility requirements,</li><li>redemption documentation,</li><li>corporate action documentation.</li></ul>
+<h2 id="system-data-sources--source-priority"><a class="doc-anchor" href="#system-data-sources--source-priority" aria-hidden="true" tabindex="-1">#</a>Source priority</h2>
+<p>Not every source has equal authority.</p>
+<p>Varp should prefer, where available:</p>
+<ol><li>authoritative issuer or legal documentation,</li><li>custodian documentation,</li><li>directly observable onchain behavior,</li><li>official technical documentation,</li><li>secondary explanatory material.</li></ol>
+<p>Secondary sources can help discovery, but important rights should not be marked Verified solely from unofficial summaries.</p>
+<h2 id="system-data-sources--evidence-provenance"><a class="doc-anchor" href="#system-data-sources--evidence-provenance" aria-hidden="true" tabindex="-1">#</a>Evidence provenance</h2>
+<p>For every material claim, Varp should retain:</p>
+<ul><li>source name,</li><li>source type,</li><li>source reference or URL,</li><li>time observed,</li><li>affected rights,</li><li>extraction or observation note.</li></ul>
+<p>This allows a user to understand <strong>where a claim came from</strong> instead of receiving an unexplained label.</p></div>
+        <nav class="docs-pager" aria-label="Pagination">
+          <a class="docs-pager-link" href="#/system/how-varp-works"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span><small>Previous</small>How Varp Works</span></a>
+          <a class="docs-pager-link is-next" href="#/system/architecture"><span><small>Next</small>System Architecture</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </nav>
+      </div>
+      <aside class="docs-toc" aria-label="On this page"><p class="docs-toc-title">On this page</p><ul><li class="toc-level-2"><a href="#system-data-sources--onchain-sources" data-toc-link="system-data-sources--onchain-sources">Onchain Sources</a></li><li class="toc-level-2"><a href="#system-data-sources--offchain-sources" data-toc-link="system-data-sources--offchain-sources">Offchain Sources</a></li><li class="toc-level-2"><a href="#system-data-sources--source-priority" data-toc-link="system-data-sources--source-priority">Source priority</a></li><li class="toc-level-2"><a href="#system-data-sources--evidence-provenance" data-toc-link="system-data-sources--evidence-provenance">Evidence provenance</a></li></ul></aside>
+    </article>
+<article class="docs-page" id="page-system/architecture" data-page="system/architecture" data-title="System Architecture" data-group="System">
+      <div class="docs-page-body">
+        <nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="#/introduction">Docs</a><span>/</span><span>System</span><span>/</span><span aria-current="page">System Architecture</span></nav>
+        <h1 class="docs-title">System Architecture</h1>
+        <p class="docs-updated">Page last updated: September 21, 2026</p>
+        <div class="docs-prose"><p>The architecture is intentionally simple.</p>
+<div class="doc-code" data-lang="text"><div class="doc-code-bar"><span>text</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code>                    +----------------------+
+                    |      Dashboard       |
+                    +----------+-----------+
+                               |
+                               v
+                    +----------------------+
+                    |       REST API       |
+                    +----------+-----------+
+                               |
+                 +-------------+-------------+
+                 |                           |
+                 v                           v
+        +----------------+          +------------------+
+        | Rights Engine  |          | Verification     |
+        |                |&lt;--------&gt;| Engine           |
+        +-------+--------+          +---------+--------+
+                |                             |
+        +-------+---------+          +--------+---------+
+        |                 |          |                  |
+        v                 v          v                  v
++---------------+  +---------------+           +---------------+
+| Blockchain    |  | Document      |           | PostgreSQL    |
+| Indexer       |  | Parser/Index  |           |               |
++---------------+  +---------------+           +---------------+
+        |
+        v
+   RH Chain
+
+Optional:
+Rights Profile hash / version metadata -&gt; Varp Registry contract</code></pre></div>
+<h2 id="system-architecture--frontend"><a class="doc-anchor" href="#system-architecture--frontend" aria-hidden="true" tabindex="-1">#</a>Frontend</h2>
+<p>The dashboard presents:</p>
+<ul><li>asset search,</li><li>asset overview,</li><li>rights,</li><li>restrictions,</li><li>DeFi compatibility,</li><li>verification state,</li><li>sources,</li><li>last updated time,</li><li>Rights Diff.</li></ul>
+<h2 id="system-architecture--backend"><a class="doc-anchor" href="#system-architecture--backend" aria-hidden="true" tabindex="-1">#</a>Backend</h2>
+<p>The backend coordinates:</p>
+<ul><li>asset lookup,</li><li>profile retrieval,</li><li>normalization,</li><li>comparison,</li><li>verification,</li><li>history.</li></ul>
+<h2 id="system-architecture--database"><a class="doc-anchor" href="#system-architecture--database" aria-hidden="true" tabindex="-1">#</a>Database</h2>
+<p>The database stores:</p>
+<ul><li>assets,</li><li>rights profiles,</li><li>evidence sources,</li><li>verification states,</li><li>historical versions,</li><li>change records.</li></ul>
+<h2 id="system-architecture--blockchain-indexer"><a class="doc-anchor" href="#system-architecture--blockchain-indexer" aria-hidden="true" tabindex="-1">#</a>Blockchain Indexer</h2>
+<p>The indexer reads the technical behavior of supported contracts.</p>
+<p>It does not decide legal meaning by itself.</p>
+<h2 id="system-architecture--document-layer"><a class="doc-anchor" href="#system-architecture--document-layer" aria-hidden="true" tabindex="-1">#</a>Document Layer</h2>
+<p>The document layer stores and extracts rights related information from authoritative materials.</p>
+<h2 id="system-architecture--rights-engine"><a class="doc-anchor" href="#system-architecture--rights-engine" aria-hidden="true" tabindex="-1">#</a>Rights Engine</h2>
+<p>The Rights Engine converts heterogeneous evidence into the Varp schema.</p>
+<h2 id="system-architecture--verification-engine"><a class="doc-anchor" href="#system-architecture--verification-engine" aria-hidden="true" tabindex="-1">#</a>Verification Engine</h2>
+<p>The Verification Engine checks completeness and consistency across evidence sources.</p>
+<p>The system is evidence first: a normalized field should be traceable to the information used to derive it.</p></div>
+        <nav class="docs-pager" aria-label="Pagination">
+          <a class="docs-pager-link" href="#/system/data-sources"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span><small>Previous</small>Data Sources</span></a>
+          <a class="docs-pager-link is-next" href="#/system/onchain-registry"><span><small>Next</small>Onchain Registry Concept</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </nav>
+      </div>
+      <aside class="docs-toc" aria-label="On this page"><p class="docs-toc-title">On this page</p><ul><li class="toc-level-2"><a href="#system-architecture--frontend" data-toc-link="system-architecture--frontend">Frontend</a></li><li class="toc-level-2"><a href="#system-architecture--backend" data-toc-link="system-architecture--backend">Backend</a></li><li class="toc-level-2"><a href="#system-architecture--database" data-toc-link="system-architecture--database">Database</a></li><li class="toc-level-2"><a href="#system-architecture--blockchain-indexer" data-toc-link="system-architecture--blockchain-indexer">Blockchain Indexer</a></li><li class="toc-level-2"><a href="#system-architecture--document-layer" data-toc-link="system-architecture--document-layer">Document Layer</a></li><li class="toc-level-2"><a href="#system-architecture--rights-engine" data-toc-link="system-architecture--rights-engine">Rights Engine</a></li><li class="toc-level-2"><a href="#system-architecture--verification-engine" data-toc-link="system-architecture--verification-engine">Verification Engine</a></li></ul></aside>
+    </article>
+<article class="docs-page" id="page-system/onchain-registry" data-page="system/onchain-registry" data-title="Onchain Registry Concept" data-group="System">
+      <div class="docs-page-body">
+        <nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="#/introduction">Docs</a><span>/</span><span>System</span><span>/</span><span aria-current="page">Onchain Registry Concept</span></nav>
+        <h1 class="docs-title">Onchain Registry Concept</h1>
+        <p class="docs-updated">Page last updated: September 21, 2026</p>
+        <div class="docs-prose"><p>The source product is primarily an <strong>information and verification layer</strong>. For a build that also requires a smart contract, Varp can add one minimal onchain component without changing that core idea.</p>
+<p>The contract should be a <strong>non custodial Rights Registry</strong>, not a tokenization, trading, or custody contract.</p>
+<h2 id="system-onchain-registry--purpose"><a class="doc-anchor" href="#system-onchain-registry--purpose" aria-hidden="true" tabindex="-1">#</a>Purpose</h2>
+<p>The registry anchors the identity and version of a Rights Profile onchain.</p>
+<p>It can answer:</p>
+<ul><li>which asset a profile refers to,</li><li>which profile version is current,</li><li>who published or verified the update,</li><li>when it was updated,</li><li>what verification state was recorded,</li><li>which offchain profile hash or URI corresponds to the version.</li></ul>
+<h2 id="system-onchain-registry--minimal-conceptual-record"><a class="doc-anchor" href="#system-onchain-registry--minimal-conceptual-record" aria-hidden="true" tabindex="-1">#</a>Minimal conceptual record</h2>
+<div class="doc-code" data-lang="text"><div class="doc-code-bar"><span>text</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code>Asset:
+- chain identifier
+- token address
+
+Profile anchor:
+- profile hash
+- optional metadata URI
+- verification status
+- version
+- updated timestamp</code></pre></div>
+<p>The full legal and technical profile remains offchain because it is larger, changes over time, and may contain source references that are not appropriate for contract storage.</p>
+<h2 id="system-onchain-registry--roles"><a class="doc-anchor" href="#system-onchain-registry--roles" aria-hidden="true" tabindex="-1">#</a>Roles</h2>
+<p>A simple model can use:</p>
+<ul><li><strong>Admin</strong>: manages authorized publishers/verifiers.</li><li><strong>Publisher / Verifier</strong>: publishes or updates profile anchors.</li></ul>
+<p>Keep governance intentionally simple and limited to the roles required by the product.</p>
+<h2 id="system-onchain-registry--update-flow"><a class="doc-anchor" href="#system-onchain-registry--update-flow" aria-hidden="true" tabindex="-1">#</a>Update flow</h2>
+<div class="doc-code" data-lang="text"><div class="doc-code-bar"><span>text</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code>Evidence changes
+     |
+     v
+Varp creates a new Rights Profile
+     |
+     v
+Profile content is hashed
+     |
+     v
+Registry stores the new hash + status + version
+     |
+     v
+Event records the update</code></pre></div>
+<h2 id="system-onchain-registry--events"><a class="doc-anchor" href="#system-onchain-registry--events" aria-hidden="true" tabindex="-1">#</a>Events</h2>
+<p>The contract should conceptually expose events for:</p>
+<ul><li>asset registration,</li><li>profile update,</li><li>verification status update,</li><li>publisher authorization changes.</li></ul>
+<p>Events make the history easy to index.</p>
+<h2 id="system-onchain-registry--what-the-registry-does-not-do"><a class="doc-anchor" href="#system-onchain-registry--what-the-registry-does-not-do" aria-hidden="true" tabindex="-1">#</a>What the registry does not do</h2>
+<p>The registry does not:</p>
+<ul><li>hold user funds,</li><li>custody tokenized assets,</li><li>mint stock tokens,</li><li>execute trades,</li><li>guarantee legal enforceability,</li><li>decide whether an asset is a good investment.</li></ul>
+<p>Its job is only to create a simple tamper evident anchor for Varp's rights intelligence.</p></div>
+        <nav class="docs-pager" aria-label="Pagination">
+          <a class="docs-pager-link" href="#/system/architecture"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span><small>Previous</small>System Architecture</span></a>
+          <a class="docs-pager-link is-next" href="#/product/dashboard"><span><small>Next</small>Dashboard</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </nav>
+      </div>
+      <aside class="docs-toc" aria-label="On this page"><p class="docs-toc-title">On this page</p><ul><li class="toc-level-2"><a href="#system-onchain-registry--purpose" data-toc-link="system-onchain-registry--purpose">Purpose</a></li><li class="toc-level-2"><a href="#system-onchain-registry--minimal-conceptual-record" data-toc-link="system-onchain-registry--minimal-conceptual-record">Minimal conceptual record</a></li><li class="toc-level-2"><a href="#system-onchain-registry--roles" data-toc-link="system-onchain-registry--roles">Roles</a></li><li class="toc-level-2"><a href="#system-onchain-registry--update-flow" data-toc-link="system-onchain-registry--update-flow">Update flow</a></li><li class="toc-level-2"><a href="#system-onchain-registry--events" data-toc-link="system-onchain-registry--events">Events</a></li><li class="toc-level-2"><a href="#system-onchain-registry--what-the-registry-does-not-do" data-toc-link="system-onchain-registry--what-the-registry-does-not-do">What the registry does not do</a></li></ul></aside>
+    </article>
+<article class="docs-page" id="page-product/dashboard" data-page="product/dashboard" data-title="Dashboard" data-group="Product">
+      <div class="docs-page-body">
+        <nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="#/introduction">Docs</a><span>/</span><span>Product</span><span>/</span><span aria-current="page">Dashboard</span></nav>
+        <h1 class="docs-title">Dashboard</h1>
+        <p class="docs-updated">Page last updated: September 21, 2026</p>
+        <div class="docs-prose"><p>The dashboard should remain extremely simple.</p>
+<h2 id="product-dashboard--search"><a class="doc-anchor" href="#product-dashboard--search" aria-hidden="true" tabindex="-1">#</a>Search</h2>
+<p>Primary input:</p>
+<div class="doc-code" data-lang="text"><div class="doc-code-bar"><span>text</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code>Enter token address...</code></pre></div>
+<p>The user should not need to understand the internal system before using Varp.</p>
+<h2 id="product-dashboard--asset-overview"><a class="doc-anchor" href="#product-dashboard--asset-overview" aria-hidden="true" tabindex="-1">#</a>Asset Overview</h2>
+<p>The result page should show:</p>
+<ul><li>asset name,</li><li>underlying asset,</li><li>token type,</li><li>contract address,</li><li>current verification badge,</li><li>last verified time.</li></ul>
+<h2 id="product-dashboard--rights"><a class="doc-anchor" href="#product-dashboard--rights" aria-hidden="true" tabindex="-1">#</a>Rights</h2>
+<p>Example:</p>
+<div class="doc-code" data-lang="text"><div class="doc-code-bar"><span>text</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code>Ownership: Indirect
+Voting: No
+Dividends: Yes
+Redemption: Yes</code></pre></div>
+<h2 id="product-dashboard--restrictions"><a class="doc-anchor" href="#product-dashboard--restrictions" aria-hidden="true" tabindex="-1">#</a>Restrictions</h2>
+<p>Example:</p>
+<div class="doc-code" data-lang="text"><div class="doc-code-bar"><span>text</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code>Transfer: Permissioned
+KYC: Required
+Eligible wallets: Whitelist
+Geographic restrictions: Conditional</code></pre></div>
+<h2 id="product-dashboard--defi"><a class="doc-anchor" href="#product-dashboard--defi" aria-hidden="true" tabindex="-1">#</a>DeFi</h2>
+<p>Example:</p>
+<div class="doc-code" data-lang="text"><div class="doc-code-bar"><span>text</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code>Collateral: Restricted
+Lending: Unknown
+DEX: Restricted
+Smart contracts: Restricted</code></pre></div>
+<h2 id="product-dashboard--sources"><a class="doc-anchor" href="#product-dashboard--sources" aria-hidden="true" tabindex="-1">#</a>Sources</h2>
+<p>The dashboard should expose the categories of evidence behind the profile:</p>
+<ul><li>issuer documentation,</li><li>custodian documentation,</li><li>legal/offering documentation,</li><li>onchain contract analysis.</li></ul>
+<h2 id="product-dashboard--conflicts"><a class="doc-anchor" href="#product-dashboard--conflicts" aria-hidden="true" tabindex="-1">#</a>Conflicts</h2>
+<p>If Varp detects a conflict, it should be visually obvious.</p>
+<p>The dashboard should explain:</p>
+<ul><li>which field is in conflict,</li><li>what the documentation says,</li><li>what Varp observes onchain,</li><li>when each source was last checked.</li></ul>
+<p>The goal is clarity, not a complex analytics interface.</p></div>
+        <nav class="docs-pager" aria-label="Pagination">
+          <a class="docs-pager-link" href="#/system/onchain-registry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span><small>Previous</small>Onchain Registry Concept</span></a>
+          <a class="docs-pager-link is-next" href="#/product/api"><span><small>Next</small>API</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </nav>
+      </div>
+      <aside class="docs-toc" aria-label="On this page"><p class="docs-toc-title">On this page</p><ul><li class="toc-level-2"><a href="#product-dashboard--search" data-toc-link="product-dashboard--search">Search</a></li><li class="toc-level-2"><a href="#product-dashboard--asset-overview" data-toc-link="product-dashboard--asset-overview">Asset Overview</a></li><li class="toc-level-2"><a href="#product-dashboard--rights" data-toc-link="product-dashboard--rights">Rights</a></li><li class="toc-level-2"><a href="#product-dashboard--restrictions" data-toc-link="product-dashboard--restrictions">Restrictions</a></li><li class="toc-level-2"><a href="#product-dashboard--defi" data-toc-link="product-dashboard--defi">DeFi</a></li><li class="toc-level-2"><a href="#product-dashboard--sources" data-toc-link="product-dashboard--sources">Sources</a></li><li class="toc-level-2"><a href="#product-dashboard--conflicts" data-toc-link="product-dashboard--conflicts">Conflicts</a></li></ul></aside>
+    </article>
+<article class="docs-page" id="page-product/api" data-page="product/api" data-title="API" data-group="Product">
+      <div class="docs-page-body">
+        <nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="#/introduction">Docs</a><span>/</span><span>Product</span><span>/</span><span aria-current="page">API</span></nav>
+        <h1 class="docs-title">API</h1>
+        <p class="docs-updated">Page last updated: September 21, 2026</p>
+        <div class="docs-prose"><p>The API exposes the same normalized information used by the dashboard.</p>
+<h2 id="product-api--complete-asset-profile"><a class="doc-anchor" href="#product-api--complete-asset-profile" aria-hidden="true" tabindex="-1">#</a>Complete asset profile</h2>
+<div class="doc-code" data-lang="http"><div class="doc-code-bar"><span>http</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code><span class="tok-method">GET</span> /v1/assets/{chain}/{address}</code></pre></div>
+<p>Returns the complete Rights Profile.</p>
+<h2 id="product-api--rights-only"><a class="doc-anchor" href="#product-api--rights-only" aria-hidden="true" tabindex="-1">#</a>Rights only</h2>
+<div class="doc-code" data-lang="http"><div class="doc-code-bar"><span>http</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code><span class="tok-method">GET</span> /v1/assets/{chain}/{address}/rights</code></pre></div>
+<p>Returns normalized rights information.</p>
+<h2 id="product-api--restrictions"><a class="doc-anchor" href="#product-api--restrictions" aria-hidden="true" tabindex="-1">#</a>Restrictions</h2>
+<div class="doc-code" data-lang="http"><div class="doc-code-bar"><span>http</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code><span class="tok-method">GET</span> /v1/assets/{chain}/{address}/restrictions</code></pre></div>
+<p>Returns transfer, eligibility, geographic, KYC, whitelist, and related restrictions.</p>
+<h2 id="product-api--verification"><a class="doc-anchor" href="#product-api--verification" aria-hidden="true" tabindex="-1">#</a>Verification</h2>
+<div class="doc-code" data-lang="http"><div class="doc-code-bar"><span>http</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code><span class="tok-method">GET</span> /v1/assets/{chain}/{address}/verification</code></pre></div>
+<p>Returns:</p>
+<ul><li>current verification state,</li><li>evidence summary,</li><li>source references,</li><li>last updated time,</li><li>unresolved issues or conflicts.</li></ul>
+<h2 id="product-api--changes"><a class="doc-anchor" href="#product-api--changes" aria-hidden="true" tabindex="-1">#</a>Changes</h2>
+<div class="doc-code" data-lang="http"><div class="doc-code-bar"><span>http</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code><span class="tok-method">GET</span> /v1/assets/{chain}/{address}/changes</code></pre></div>
+<p>Returns historical rights or status changes.</p>
+<h2 id="product-api--compare"><a class="doc-anchor" href="#product-api--compare" aria-hidden="true" tabindex="-1">#</a>Compare</h2>
+<div class="doc-code" data-lang="http"><div class="doc-code-bar"><span>http</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code><span class="tok-method">POST</span> /v1/compare</code></pre></div>
+<p>Compares two or more supported assets using normalized rights fields.</p>
+<h2 id="product-api--health"><a class="doc-anchor" href="#product-api--health" aria-hidden="true" tabindex="-1">#</a>Health</h2>
+<div class="doc-code" data-lang="http"><div class="doc-code-bar"><span>http</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code><span class="tok-method">GET</span> /v1/health</code></pre></div>
+<p>Returns basic service health.</p>
+<h2 id="product-api--api-principle"><a class="doc-anchor" href="#product-api--api-principle" aria-hidden="true" tabindex="-1">#</a>API principle</h2>
+<p>The API should expose explicit <code>unknown</code> or unresolved states instead of silently returning false.</p>
+<p>For example:</p>
+<div class="doc-code" data-lang="text"><div class="doc-code-bar"><span>text</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code>redemption = unknown</code></pre></div>
+<p>is different from:</p>
+<div class="doc-code" data-lang="text"><div class="doc-code-bar"><span>text</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code>redemption = false</code></pre></div>
+<p>That distinction is important for rights intelligence.</p></div>
+        <nav class="docs-pager" aria-label="Pagination">
+          <a class="docs-pager-link" href="#/product/dashboard"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span><small>Previous</small>Dashboard</span></a>
+          <a class="docs-pager-link is-next" href="#/product/use-cases"><span><small>Next</small>Use Cases</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </nav>
+      </div>
+      <aside class="docs-toc" aria-label="On this page"><p class="docs-toc-title">On this page</p><ul><li class="toc-level-2"><a href="#product-api--complete-asset-profile" data-toc-link="product-api--complete-asset-profile">Complete asset profile</a></li><li class="toc-level-2"><a href="#product-api--rights-only" data-toc-link="product-api--rights-only">Rights only</a></li><li class="toc-level-2"><a href="#product-api--restrictions" data-toc-link="product-api--restrictions">Restrictions</a></li><li class="toc-level-2"><a href="#product-api--verification" data-toc-link="product-api--verification">Verification</a></li><li class="toc-level-2"><a href="#product-api--changes" data-toc-link="product-api--changes">Changes</a></li><li class="toc-level-2"><a href="#product-api--compare" data-toc-link="product-api--compare">Compare</a></li><li class="toc-level-2"><a href="#product-api--health" data-toc-link="product-api--health">Health</a></li><li class="toc-level-2"><a href="#product-api--api-principle" data-toc-link="product-api--api-principle">API principle</a></li></ul></aside>
+    </article>
+<article class="docs-page" id="page-product/use-cases" data-page="product/use-cases" data-title="Use Cases" data-group="Product">
+      <div class="docs-page-body">
+        <nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="#/introduction">Docs</a><span>/</span><span>Product</span><span>/</span><span aria-current="page">Use Cases</span></nav>
+        <h1 class="docs-title">Use Cases</h1>
+        <p class="docs-updated">Page last updated: September 21, 2026</p>
+        <div class="docs-prose"><h2 id="product-use-cases--wallets"><a class="doc-anchor" href="#product-use-cases--wallets" aria-hidden="true" tabindex="-1">#</a>Wallets</h2>
+<p>Before displaying or deeply integrating a token, a wallet can ask:</p>
+<blockquote class="doc-callout">What rights and restrictions does this asset have?</blockquote>
+<p>The wallet can use Varp to surface transfer restrictions, verification state, or redemption information.</p>
+<h2 id="product-use-cases--defi-protocols"><a class="doc-anchor" href="#product-use-cases--defi-protocols" aria-hidden="true" tabindex="-1">#</a>DeFi Protocols</h2>
+<p>Before accepting an asset as collateral or allowing it in a pool, a protocol can ask:</p>
+<blockquote class="doc-callout">Can this token actually interact with the protocol, and are there restrictions?</blockquote>
+<p>Varp can expose permission requirements and contract level limitations.</p>
+<h2 id="product-use-cases--exchanges"><a class="doc-anchor" href="#product-use-cases--exchanges" aria-hidden="true" tabindex="-1">#</a>Exchanges</h2>
+<p>Before listing or presenting a token, an exchange can ask:</p>
+<blockquote class="doc-callout">What does this token represent and what restrictions apply?</blockquote>
+<h2 id="product-use-cases--asset-issuers"><a class="doc-anchor" href="#product-use-cases--asset-issuers" aria-hidden="true" tabindex="-1">#</a>Asset Issuers</h2>
+<p>Issuers can publish or reference a standardized machine readable rights profile instead of requiring every integrator to interpret documents independently.</p>
+<h2 id="product-use-cases--developers"><a class="doc-anchor" href="#product-use-cases--developers" aria-hidden="true" tabindex="-1">#</a>Developers</h2>
+<p>Developers can query one schema instead of building a custom research process for every tokenized asset.</p>
+<h2 id="product-use-cases--users"><a class="doc-anchor" href="#product-use-cases--users" aria-hidden="true" tabindex="-1">#</a>Users</h2>
+<p>Users can answer the most basic question:</p>
+<blockquote class="doc-callout">What does this token actually give me?</blockquote></div>
+        <nav class="docs-pager" aria-label="Pagination">
+          <a class="docs-pager-link" href="#/product/api"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span><small>Previous</small>API</span></a>
+          <a class="docs-pager-link is-next" href="#/trust/security-and-limitations"><span><small>Next</small>Security, Trust &amp; Limitations</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </nav>
+      </div>
+      <aside class="docs-toc" aria-label="On this page"><p class="docs-toc-title">On this page</p><ul><li class="toc-level-2"><a href="#product-use-cases--wallets" data-toc-link="product-use-cases--wallets">Wallets</a></li><li class="toc-level-2"><a href="#product-use-cases--defi-protocols" data-toc-link="product-use-cases--defi-protocols">DeFi Protocols</a></li><li class="toc-level-2"><a href="#product-use-cases--exchanges" data-toc-link="product-use-cases--exchanges">Exchanges</a></li><li class="toc-level-2"><a href="#product-use-cases--asset-issuers" data-toc-link="product-use-cases--asset-issuers">Asset Issuers</a></li><li class="toc-level-2"><a href="#product-use-cases--developers" data-toc-link="product-use-cases--developers">Developers</a></li><li class="toc-level-2"><a href="#product-use-cases--users" data-toc-link="product-use-cases--users">Users</a></li></ul></aside>
+    </article>
+<article class="docs-page" id="page-trust/security-and-limitations" data-page="trust/security-and-limitations" data-title="Security, Trust &amp; Limitations" data-group="Trust">
+      <div class="docs-page-body">
+        <nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="#/introduction">Docs</a><span>/</span><span>Trust</span><span>/</span><span aria-current="page">Security, Trust &amp; Limitations</span></nav>
+        <h1 class="docs-title">Security, Trust &amp; Limitations</h1>
+        <p class="docs-updated">Page last updated: September 21, 2026</p>
+        <div class="docs-prose"><p>Varp is a rights intelligence system, so correctness and provenance matter more than pretending every field is certain.</p>
+<h2 id="trust-security-and-limitations--evidence-first-design"><a class="doc-anchor" href="#trust-security-and-limitations--evidence-first-design" aria-hidden="true" tabindex="-1">#</a>Evidence first design</h2>
+<p>Every important claim should have supporting evidence.</p>
+<p>Varp should avoid:</p>
+<ul><li>silently inferring legal rights from token names,</li><li>equating ERC compatibility with unrestricted transferability,</li><li>marking unknown fields as false,</li><li>treating unofficial summaries as authoritative,</li><li>calling a profile Verified when major contradictions remain.</li></ul>
+<h2 id="trust-security-and-limitations--conflict-is-a-valid-result"><a class="doc-anchor" href="#trust-security-and-limitations--conflict-is-a-valid-result" aria-hidden="true" tabindex="-1">#</a>Conflict is a valid result</h2>
+<p>A disagreement between documentation and live contract behavior should not be hidden.</p>
+<p><code>CONFLICT</code> is a first class output.</p>
+<h2 id="trust-security-and-limitations--smart-contract-security"><a class="doc-anchor" href="#trust-security-and-limitations--smart-contract-security" aria-hidden="true" tabindex="-1">#</a>Smart contract security</h2>
+<p>If the optional Varp Registry contract is used, its attack surface should remain minimal.</p>
+<p>The registry should not custody assets or user funds. Its main security concerns are:</p>
+<ul><li>unauthorized profile updates,</li><li>compromised publisher/admin keys,</li><li>incorrect status publication,</li><li>accidental overwrite or version confusion.</li></ul>
+<p>A versioned update history and explicit authorization model reduce ambiguity.</p>
+<h2 id="trust-security-and-limitations--legal-limitation"><a class="doc-anchor" href="#trust-security-and-limitations--legal-limitation" aria-hidden="true" tabindex="-1">#</a>Legal limitation</h2>
+<p>Varp organizes evidence and describes rights based on available sources.</p>
+<p>It does not provide legal advice and cannot guarantee that a right will be enforceable in every jurisdiction.</p>
+<h2 id="trust-security-and-limitations--financial-limitation"><a class="doc-anchor" href="#trust-security-and-limitations--financial-limitation" aria-hidden="true" tabindex="-1">#</a>Financial limitation</h2>
+<p>A verification badge does not represent investment quality, price stability, issuer solvency, liquidity, or future performance.</p>
+<h2 id="trust-security-and-limitations--data-freshness"><a class="doc-anchor" href="#trust-security-and-limitations--data-freshness" aria-hidden="true" tabindex="-1">#</a>Data freshness</h2>
+<p>Rights intelligence becomes stale if:</p>
+<ul><li>contracts are upgraded,</li><li>admins change configuration,</li><li>issuer terms change,</li><li>corporate actions occur,</li><li>redemption terms change,</li><li>assets are suspended or redeemed.</li></ul>
+<p>Every profile should therefore include a last verified timestamp and change history.</p></div>
+        <nav class="docs-pager" aria-label="Pagination">
+          <a class="docs-pager-link" href="#/product/use-cases"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span><small>Previous</small>Use Cases</span></a>
+          <a class="docs-pager-link is-next" href="#/reference/status-reference"><span><small>Next</small>Rights Status Reference</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </nav>
+      </div>
+      <aside class="docs-toc" aria-label="On this page"><p class="docs-toc-title">On this page</p><ul><li class="toc-level-2"><a href="#trust-security-and-limitations--evidence-first-design" data-toc-link="trust-security-and-limitations--evidence-first-design">Evidence first design</a></li><li class="toc-level-2"><a href="#trust-security-and-limitations--conflict-is-a-valid-result" data-toc-link="trust-security-and-limitations--conflict-is-a-valid-result">Conflict is a valid result</a></li><li class="toc-level-2"><a href="#trust-security-and-limitations--smart-contract-security" data-toc-link="trust-security-and-limitations--smart-contract-security">Smart contract security</a></li><li class="toc-level-2"><a href="#trust-security-and-limitations--legal-limitation" data-toc-link="trust-security-and-limitations--legal-limitation">Legal limitation</a></li><li class="toc-level-2"><a href="#trust-security-and-limitations--financial-limitation" data-toc-link="trust-security-and-limitations--financial-limitation">Financial limitation</a></li><li class="toc-level-2"><a href="#trust-security-and-limitations--data-freshness" data-toc-link="trust-security-and-limitations--data-freshness">Data freshness</a></li></ul></aside>
+    </article>
+<article class="docs-page" id="page-reference/status-reference" data-page="reference/status-reference" data-title="Rights Status Reference" data-group="Reference">
+      <div class="docs-page-body">
+        <nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="#/introduction">Docs</a><span>/</span><span>Reference</span><span>/</span><span aria-current="page">Rights Status Reference</span></nav>
+        <h1 class="docs-title">Rights Status Reference</h1>
+        <p class="docs-updated">Page last updated: September 21, 2026</p>
+        <div class="docs-prose"><p>This page provides a compact vocabulary for Varp.</p>
+<h2 id="reference-status-reference--verification"><a class="doc-anchor" href="#reference-status-reference--verification" aria-hidden="true" tabindex="-1">#</a>Verification</h2>
+<div class="doc-table"><table><thead><tr><th>Status</th><th>Meaning</th></tr></thead><tbody><tr><td><code>VERIFIED</code></td><td>Core onchain behavior and authoritative documentation agree.</td></tr><tr><td><code>PARTIALLY_VERIFIED</code></td><td>Some important rights are confirmed, but meaningful gaps remain.</td></tr><tr><td><code>UNVERIFIED</code></td><td>Evidence is insufficient.</td></tr><tr><td><code>CONFLICT</code></td><td>Important evidence sources disagree.</td></tr></tbody></table></div>
+<h2 id="reference-status-reference--ownership"><a class="doc-anchor" href="#reference-status-reference--ownership" aria-hidden="true" tabindex="-1">#</a>Ownership</h2>
+<div class="doc-table"><table><thead><tr><th>Value</th><th>Meaning</th></tr></thead><tbody><tr><td><code>DIRECT</code></td><td>Direct ownership structure.</td></tr><tr><td><code>INDIRECT</code></td><td>Rights are mediated through an issuer, custodian, SPV, or similar structure.</td></tr><tr><td><code>BENEFICIAL_INTEREST</code></td><td>Beneficial/economic claim without direct registered ownership.</td></tr><tr><td><code>SYNTHETIC</code></td><td>Exposure without ownership of the underlying asset.</td></tr><tr><td><code>UNKNOWN</code></td><td>Not sufficiently established.</td></tr></tbody></table></div>
+<h2 id="reference-status-reference--generic-right-state"><a class="doc-anchor" href="#reference-status-reference--generic-right-state" aria-hidden="true" tabindex="-1">#</a>Generic right state</h2>
+<p>Where useful, individual rights can use:</p>
+<ul><li><code>YES</code></li><li><code>NO</code></li><li><code>CONDITIONAL</code></li><li><code>RESTRICTED</code></li><li><code>UNKNOWN</code></li></ul>
+<h2 id="reference-status-reference--transfer"><a class="doc-anchor" href="#reference-status-reference--transfer" aria-hidden="true" tabindex="-1">#</a>Transfer</h2>
+<p>Useful flags include:</p>
+<ul><li><code>permissioned</code></li><li><code>whitelist_required</code></li><li><code>kyc_required</code></li><li><code>geographic_restrictions</code></li><li><code>investor_eligibility_restrictions</code></li><li><code>paused</code></li><li><code>frozen</code></li></ul>
+<h2 id="reference-status-reference--lifecycle"><a class="doc-anchor" href="#reference-status-reference--lifecycle" aria-hidden="true" tabindex="-1">#</a>Lifecycle</h2>
+<ul><li><code>ACTIVE</code></li><li><code>RESTRICTED</code></li><li><code>SUSPENDED</code></li><li><code>CORPORATE_ACTION</code></li><li><code>REDEEMING</code></li><li><code>REDEEMED</code></li></ul></div>
+        <nav class="docs-pager" aria-label="Pagination">
+          <a class="docs-pager-link" href="#/trust/security-and-limitations"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span><small>Previous</small>Security, Trust &amp; Limitations</span></a>
+          <a class="docs-pager-link is-next" href="#/reference/example-rights-profile"><span><small>Next</small>Example Rights Profile</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </nav>
+      </div>
+      <aside class="docs-toc" aria-label="On this page"><p class="docs-toc-title">On this page</p><ul><li class="toc-level-2"><a href="#reference-status-reference--verification" data-toc-link="reference-status-reference--verification">Verification</a></li><li class="toc-level-2"><a href="#reference-status-reference--ownership" data-toc-link="reference-status-reference--ownership">Ownership</a></li><li class="toc-level-2"><a href="#reference-status-reference--generic-right-state" data-toc-link="reference-status-reference--generic-right-state">Generic right state</a></li><li class="toc-level-2"><a href="#reference-status-reference--transfer" data-toc-link="reference-status-reference--transfer">Transfer</a></li><li class="toc-level-2"><a href="#reference-status-reference--lifecycle" data-toc-link="reference-status-reference--lifecycle">Lifecycle</a></li></ul></aside>
+    </article>
+<article class="docs-page" id="page-reference/example-rights-profile" data-page="reference/example-rights-profile" data-title="Example Rights Profile" data-group="Reference">
+      <div class="docs-page-body">
+        <nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="#/introduction">Docs</a><span>/</span><span>Reference</span><span>/</span><span aria-current="page">Example Rights Profile</span></nav>
+        <h1 class="docs-title">Example Rights Profile</h1>
+        <p class="docs-updated">Page last updated: September 21, 2026</p>
+        <div class="docs-prose"><p>The exact schema can evolve. The important goal is a consistent vocabulary.</p>
+<div class="doc-code" data-lang="json"><div class="doc-code-bar"><span>json</span><button type="button" class="doc-copy" data-copy-code>Copy</button></div><pre><code>{
+  <span class="tok-key">&quot;asset&quot;</span>: {
+    <span class="tok-key">&quot;name&quot;</span>: <span class="tok-str">&quot;XYZ Stock Token&quot;</span>,
+    <span class="tok-key">&quot;symbol&quot;</span>: <span class="tok-str">&quot;XYZ&quot;</span>,
+    <span class="tok-key">&quot;chain&quot;</span>: <span class="tok-str">&quot;rh-chain&quot;</span>,
+    <span class="tok-key">&quot;token_address&quot;</span>: <span class="tok-str">&quot;0x...&quot;</span>,
+    <span class="tok-key">&quot;asset_type&quot;</span>: <span class="tok-str">&quot;tokenized_security&quot;</span>,
+    <span class="tok-key">&quot;underlying&quot;</span>: <span class="tok-str">&quot;XYZ Corp common stock&quot;</span>
+  },
+  <span class="tok-key">&quot;ownership&quot;</span>: {
+    <span class="tok-key">&quot;type&quot;</span>: <span class="tok-str">&quot;indirect&quot;</span>,
+    <span class="tok-key">&quot;legal_claim&quot;</span>: <span class="tok-bool">true</span>
+  },
+  <span class="tok-key">&quot;economic_rights&quot;</span>: {
+    <span class="tok-key">&quot;dividends&quot;</span>: <span class="tok-bool">true</span>,
+    <span class="tok-key">&quot;interest&quot;</span>: <span class="tok-bool">false</span>,
+    <span class="tok-key">&quot;yield&quot;</span>: <span class="tok-str">&quot;unknown&quot;</span>,
+    <span class="tok-key">&quot;redemption&quot;</span>: <span class="tok-bool">true</span>,
+    <span class="tok-key">&quot;distribution_rights&quot;</span>: <span class="tok-bool">true</span>
+  },
+  <span class="tok-key">&quot;governance_rights&quot;</span>: {
+    <span class="tok-key">&quot;voting&quot;</span>: <span class="tok-bool">false</span>,
+    <span class="tok-key">&quot;governance_participation&quot;</span>: <span class="tok-bool">false</span>,
+    <span class="tok-key">&quot;corporate_action_participation&quot;</span>: <span class="tok-bool">true</span>
+  },
+  <span class="tok-key">&quot;transfer&quot;</span>: {
+    <span class="tok-key">&quot;permissioned&quot;</span>: <span class="tok-bool">true</span>,
+    <span class="tok-key">&quot;whitelist_required&quot;</span>: <span class="tok-bool">true</span>,
+    <span class="tok-key">&quot;kyc_required&quot;</span>: <span class="tok-bool">true</span>,
+    <span class="tok-key">&quot;geographic_restrictions&quot;</span>: <span class="tok-str">&quot;conditional&quot;</span>,
+    <span class="tok-key">&quot;investor_eligibility_restrictions&quot;</span>: <span class="tok-bool">true</span>
+  },
+  <span class="tok-key">&quot;defi&quot;</span>: {
+    <span class="tok-key">&quot;smart_contract_transfer&quot;</span>: <span class="tok-str">&quot;restricted&quot;</span>,
+    <span class="tok-key">&quot;collateral&quot;</span>: <span class="tok-str">&quot;restricted&quot;</span>,
+    <span class="tok-key">&quot;lending&quot;</span>: <span class="tok-str">&quot;unknown&quot;</span>,
+    <span class="tok-key">&quot;dex&quot;</span>: <span class="tok-str">&quot;restricted&quot;</span>,
+    <span class="tok-key">&quot;permissionless_compatible&quot;</span>: <span class="tok-bool">false</span>
+  },
+  <span class="tok-key">&quot;lifecycle&quot;</span>: {
+    <span class="tok-key">&quot;status&quot;</span>: <span class="tok-str">&quot;active&quot;</span>
+  },
+  <span class="tok-key">&quot;verification&quot;</span>: {
+    <span class="tok-key">&quot;status&quot;</span>: <span class="tok-str">&quot;verified&quot;</span>,
+    <span class="tok-key">&quot;last_updated&quot;</span>: <span class="tok-str">&quot;timestamp&quot;</span>,
+    <span class="tok-key">&quot;sources&quot;</span>: [
+      <span class="tok-str">&quot;issuer_documentation&quot;</span>,
+      <span class="tok-str">&quot;custodian_documentation&quot;</span>,
+      <span class="tok-str">&quot;onchain_analysis&quot;</span>
+    ]
+  }
+}</code></pre></div>
+<h2 id="reference-example-rights-profile--important-interpretation-rule"><a class="doc-anchor" href="#reference-example-rights-profile--important-interpretation-rule" aria-hidden="true" tabindex="-1">#</a>Important interpretation rule</h2>
+<p>A field being <code>unknown</code> is not equivalent to <code>false</code>.</p>
+<p>Varp should preserve uncertainty instead of manufacturing certainty.</p></div>
+        <nav class="docs-pager" aria-label="Pagination">
+          <a class="docs-pager-link" href="#/reference/status-reference"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span><small>Previous</small>Rights Status Reference</span></a>
+          <a class="docs-pager-link is-next" href="#/glossary"><span><small>Next</small>Glossary</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </nav>
+      </div>
+      <aside class="docs-toc" aria-label="On this page"><p class="docs-toc-title">On this page</p><ul><li class="toc-level-2"><a href="#reference-example-rights-profile--important-interpretation-rule" data-toc-link="reference-example-rights-profile--important-interpretation-rule">Important interpretation rule</a></li></ul></aside>
+    </article>
+<article class="docs-page" id="page-glossary" data-page="glossary" data-title="Glossary" data-group="Reference">
+      <div class="docs-page-body">
+        <nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="#/introduction">Docs</a><span>/</span><span>Reference</span><span>/</span><span aria-current="page">Glossary</span></nav>
+        <h1 class="docs-title">Glossary</h1>
+        <p class="docs-updated">Page last updated: September 21, 2026</p>
+        <div class="docs-prose"><h2 id="glossary--asset"><a class="doc-anchor" href="#glossary--asset" aria-hidden="true" tabindex="-1">#</a>Asset</h2>
+<p>The tokenized financial instrument being described by Varp.</p>
+<h2 id="glossary--underlying-asset"><a class="doc-anchor" href="#glossary--underlying-asset" aria-hidden="true" tabindex="-1">#</a>Underlying Asset</h2>
+<p>The stock or other real world asset referenced by the tokenized asset.</p>
+<h2 id="glossary--rights-profile"><a class="doc-anchor" href="#glossary--rights-profile" aria-hidden="true" tabindex="-1">#</a>Rights Profile</h2>
+<p>The normalized machine readable representation of ownership, economic, governance, transfer, redemption, DeFi, lifecycle, and verification information.</p>
+<h2 id="glossary--evidence"><a class="doc-anchor" href="#glossary--evidence" aria-hidden="true" tabindex="-1">#</a>Evidence</h2>
+<p>Information used to support a Rights Profile field.</p>
+<h2 id="glossary--onchain-evidence"><a class="doc-anchor" href="#glossary--onchain-evidence" aria-hidden="true" tabindex="-1">#</a>Onchain Evidence</h2>
+<p>Evidence observed directly from blockchain contracts, state, events, roles, permissions, and behavior.</p>
+<h2 id="glossary--offchain-evidence"><a class="doc-anchor" href="#glossary--offchain-evidence" aria-hidden="true" tabindex="-1">#</a>Offchain Evidence</h2>
+<p>Evidence from issuer, custodian, legal, offering, eligibility, redemption, or corporate action documents.</p>
+<h2 id="glossary--rights-engine"><a class="doc-anchor" href="#glossary--rights-engine" aria-hidden="true" tabindex="-1">#</a>Rights Engine</h2>
+<p>The system that converts raw evidence into Varp's normalized rights schema.</p>
+<h2 id="glossary--verification-engine"><a class="doc-anchor" href="#glossary--verification-engine" aria-hidden="true" tabindex="-1">#</a>Verification Engine</h2>
+<p>The system that determines whether evidence is complete and internally consistent.</p>
+<h2 id="glossary--rights-diff"><a class="doc-anchor" href="#glossary--rights-diff" aria-hidden="true" tabindex="-1">#</a>Rights Diff</h2>
+<p>A structured comparison of the rights and restrictions of two or more tokenized assets.</p>
+<h2 id="glossary--permissioned-transfer"><a class="doc-anchor" href="#glossary--permissioned-transfer" aria-hidden="true" tabindex="-1">#</a>Permissioned Transfer</h2>
+<p>A transfer model where movement of the token depends on approval, identity, allowlists, jurisdiction, eligibility, or other conditions.</p>
+<h2 id="glossary--whitelist-allowlist"><a class="doc-anchor" href="#glossary--whitelist-allowlist" aria-hidden="true" tabindex="-1">#</a>Whitelist / Allowlist</h2>
+<p>A list or rule set that determines which addresses are allowed to hold, receive, or interact with an asset.</p>
+<h2 id="glossary--redemption"><a class="doc-anchor" href="#glossary--redemption" aria-hidden="true" tabindex="-1">#</a>Redemption</h2>
+<p>The process through which a holder can exchange or convert the token according to the asset's documented terms.</p>
+<h2 id="glossary--corporate-action"><a class="doc-anchor" href="#glossary--corporate-action" aria-hidden="true" tabindex="-1">#</a>Corporate Action</h2>
+<p>An issuer related event such as a vote, distribution, split, merger, redemption, or other action affecting holder rights.</p>
+<h2 id="glossary--conflict"><a class="doc-anchor" href="#glossary--conflict" aria-hidden="true" tabindex="-1">#</a>Conflict</h2>
+<p>A Varp verification state used when important evidence sources disagree.</p>
+<h2 id="glossary--profile-anchor"><a class="doc-anchor" href="#glossary--profile-anchor" aria-hidden="true" tabindex="-1">#</a>Profile Anchor</h2>
+<p>A compact onchain record containing a profile hash, version, status, or metadata reference for a Rights Profile.</p></div>
+        <nav class="docs-pager" aria-label="Pagination">
+          <a class="docs-pager-link" href="#/reference/example-rights-profile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span><small>Previous</small>Example Rights Profile</span></a>
+          <span></span>
+        </nav>
+      </div>
+      <aside class="docs-toc" aria-label="On this page"><p class="docs-toc-title">On this page</p><ul><li class="toc-level-2"><a href="#glossary--asset" data-toc-link="glossary--asset">Asset</a></li><li class="toc-level-2"><a href="#glossary--underlying-asset" data-toc-link="glossary--underlying-asset">Underlying Asset</a></li><li class="toc-level-2"><a href="#glossary--rights-profile" data-toc-link="glossary--rights-profile">Rights Profile</a></li><li class="toc-level-2"><a href="#glossary--evidence" data-toc-link="glossary--evidence">Evidence</a></li><li class="toc-level-2"><a href="#glossary--onchain-evidence" data-toc-link="glossary--onchain-evidence">Onchain Evidence</a></li><li class="toc-level-2"><a href="#glossary--offchain-evidence" data-toc-link="glossary--offchain-evidence">Offchain Evidence</a></li><li class="toc-level-2"><a href="#glossary--rights-engine" data-toc-link="glossary--rights-engine">Rights Engine</a></li><li class="toc-level-2"><a href="#glossary--verification-engine" data-toc-link="glossary--verification-engine">Verification Engine</a></li><li class="toc-level-2"><a href="#glossary--rights-diff" data-toc-link="glossary--rights-diff">Rights Diff</a></li><li class="toc-level-2"><a href="#glossary--permissioned-transfer" data-toc-link="glossary--permissioned-transfer">Permissioned Transfer</a></li><li class="toc-level-2"><a href="#glossary--whitelist-allowlist" data-toc-link="glossary--whitelist-allowlist">Whitelist / Allowlist</a></li><li class="toc-level-2"><a href="#glossary--redemption" data-toc-link="glossary--redemption">Redemption</a></li><li class="toc-level-2"><a href="#glossary--corporate-action" data-toc-link="glossary--corporate-action">Corporate Action</a></li><li class="toc-level-2"><a href="#glossary--conflict" data-toc-link="glossary--conflict">Conflict</a></li><li class="toc-level-2"><a href="#glossary--profile-anchor" data-toc-link="glossary--profile-anchor">Profile Anchor</a></li></ul></aside>
+    </article>
+      </main>
+    </div>
+    <div class="docs-scrim" hidden data-docs-scrim></div>
+
+    <footer class="docs-footer">
+      <span>© 2026 Varp. Rights intelligence for tokenized assets.</span>
+      <span><a href="index.html">Home</a><a href="app.html">Registry</a><a href="#/glossary">Glossary</a></span>
+    </footer>
+
+    <script type="application/json" id="docs-search-index">[{"slug":"introduction","title":"Introduction","group":"Introduction","headings":["Core idea"],"text":"Varp is a rights intelligence layer for tokenized assets. It answers one simple question: What does this token actually give its holder? A token balance alone does not explain the legal, economic, governance, transfer, redemption, or DeFi rights attached to the asset. Varp combines onchain evidence with authoritative offchain documentation and converts that information into a standardized, machine readable Rights Profile . Varp uses a deliberately focused product scope: Asset class: tokenized stocks Chain: RH Chain Supported set: 20 to 50 tokenized stock assets Core output: a standardized Rights Profile Interfaces: dashboard + REST API Verification states: Verified, Partially Verified, Unverified, Conflict Onchain layer: a minimal non custodial registry that anchors profile versions and verification metadata Varp is not a trading venue, wallet, broker, custodian, token issuer, DEX, lending protocol, or legal advice engine. Its purpose is information and verification infrastructure. Core idea text Copy Token Address | v Onchain Evidence ---------+ | v Rights Normalization | +------ Rights Profile | Offchain Documentation ---+ | v Verification Engine | v VERIFIED / PARTIAL / UNVERIFIED / CONFLICT The result is a simple interface for wallets, protocols, exchanges, issuers, developers, and users who need to understand what a tokenized asset represents before they interact with it."},{"slug":"overview","title":"Project Overview","group":"Introduction","headings":["Product definition","Core experience"],"text":"Varp is a machine readable rights layer for tokenized assets . A normal blockchain interface can tell a user: the token contract address, the wallet that holds it, the token balance, and some contract level metadata. That is not enough to explain what the holder actually owns or is entitled to. Two tokens that reference the same underlying stock can still differ materially in: ownership structure, dividend rights, voting rights, redemption rights, transfer restrictions, KYC requirements, geographic eligibility, collateral eligibility, DeFi compatibility, corporate action treatment, and issuer or custodian obligations. Varp creates one normalized Rights Profile for each supported tokenized asset. Product definition Varp is an API and verification layer that translates tokenized assets into: machine readable rights, restrictions, ownership information, verification status, supporting sources, and historical changes. It combines: text Copy Legal / Economic Context + Asset Documentation + Onchain Contract Evidence = Standardized Rights Intelligence Core experience The simplest Varp experience is: Paste a token address. Know what it represents. A result should immediately answer: What is the underlying asset? Is ownership direct, indirect, beneficial, synthetic, or unknown? Does the holder receive dividends or other distributions? Does the holder have voting rights? Can the token be redeemed? Is transfer permissioned? Is KYC or wallet whitelisting required? Can the token interact with smart contracts? Can it be used as collateral? Are there inconsistencies between documentation and onchain behavior? When was the information last verified?"},{"slug":"concepts/problem","title":"Problem","group":"Concepts","headings":["The information gap","Varp's role"],"text":"Tokenized assets look simple onchain: text Copy Token - Wallet - Balance But a balance does not define the holder's real rights. The token contract may expose technical behavior, while the legal meaning of the asset is defined elsewhere: issuer documentation, offering documents, custodian terms, eligibility rules, redemption terms, or corporate action policies. The information gap A user may see two stock tokens with similar names and assume they provide the same exposure. In reality, one may represent a direct issuer sponsored security while another may be a custodial representation or synthetic exposure. That difference can change: who legally owns the underlying asset, whether dividends flow to the holder, whether voting is available, whether the asset can be redeemed, whether transfers require permission, whether the token can be sent to arbitrary smart contracts, and whether the token is suitable for DeFi integrations. Varp's role Varp does not try to create these rights. Varp reads, organizes, normalizes, and verifies them. The product exists to convert fragmented technical and legal information into one standard answer that software and humans can use."},{"slug":"concepts/core-concepts","title":"Core Concepts","group":"Concepts","headings":["1. Asset Identity","2. Rights Profile","3. Evidence","4. Verification","5. Change History"],"text":"Varp is built around five simple concepts. 1. Asset Identity Every supported asset starts with an onchain identity: chain, token contract address, token standard, symbol and name, underlying asset, asset type. The contract address is the primary lookup input. 2. Rights Profile A Rights Profile is the normalized description of what the token represents and what the holder can or cannot do. It contains ownership, economic, governance, transfer, DeFi, lifecycle, and verification information. 3. Evidence Every important field should be supported by evidence. Varp uses two evidence families: Onchain evidence : contract code, state, permissions, roles, events, transfer controls, upgradeability, and related technical behavior. Offchain evidence : issuer documents, custody terms, offering documents, legal disclosures, eligibility requirements, redemption terms, and corporate action documentation. 4. Verification Varp does not treat all information as equally certain. Each profile receives a verification state: VERIFIED PARTIALLY_VERIFIED UNVERIFIED CONFLICT 5. Change History Rights can change. Contracts can be upgraded. Admin roles can change. Issuer terms can be updated. Transfer restrictions can be enabled or disabled. Varp therefore treats rights as versioned information, not a permanent label."},{"slug":"concepts/rights-model","title":"Rights Model","group":"Concepts","headings":["Ownership","Economic Rights","Governance Rights","Transfer Rights","DeFi Rights and Compatibility","Lifecycle"],"text":"The Rights Model is the common language used by Varp. The first version intentionally uses a small set of categories so the system stays understandable and practical. Ownership Describes the relationship between the token holder and the underlying asset. Possible values: Direct ownership : the token itself represents direct ownership under the relevant structure. Indirect ownership : the holder owns a token whose rights are mediated through an issuer, custodian, SPV, or similar structure. Beneficial interest : the holder has an economic or beneficial claim without direct registered ownership. Synthetic exposure : the token tracks exposure without representing ownership of the underlying asset. Unknown : the available evidence is insufficient. Economic Rights Economic rights may include: dividends, interest, yield, redemption, distributions, other cash flow rights. A right can be present, absent, conditional, restricted, or unknown. Governance Rights Governance information may include: voting rights, governance participation, corporate action participation. A token can provide economic exposure without voting rights. Transfer Rights Transfer rules describe who can receive or move the token. Important states include: permissionless, permissioned, whitelist required, geographic restrictions, investor eligibility restrictions, frozen or paused transfers. DeFi Rights and Compatibility A token can exist on a smart contract chain while still being unsuitable for permissionless DeFi. Varp records whether the asset appears to be: transferable to arbitrary smart contracts, collateralizable, lendable, swappable, permissionless DeFi compatible. These fields should not be inferred from token standard compatibility alone. Lifecycle A profile can describe the asset's current lifecycle state: ACTIVE RESTRICTED SUSPENDED CORPORATE_ACTION REDEEMING REDEEMED Lifecycle is separate from verification. An asset can be fully verified and still be suspended."},{"slug":"concepts/verification-model","title":"Verification Model","group":"Concepts","headings":["VERIFIED","PARTIALLY_VERIFIED","UNVERIFIED","CONFLICT","Verification principle"],"text":"Varp uses explicit verification states instead of calling every indexed asset verified. VERIFIED Use when the important onchain behavior and authoritative documentation agree and the core rights are sufficiently supported. Typical example: documentation requires whitelisted transfers, the contract enforces an allowlist, issuer or custodian terms confirm the restriction, no material contradiction is found. PARTIALLY_VERIFIED Use when some important rights are confirmed but meaningful gaps remain. Example: transfer restrictions are verified onchain, dividend rights are documented, redemption mechanics are unclear. UNVERIFIED Use when authoritative information is insufficient. This state means Varp has not obtained enough reliable evidence to make a strong claim. CONFLICT Use when important evidence sources disagree. Example: text Copy Documentation: Transfers require whitelisted wallets. Observed onchain behavior: The contract currently allows unrestricted transfers. This is not a small detail. A conflict can change how a wallet, protocol, exchange, or user should interpret the token. Verification principle Varp verifies claims about rights , not the commercial quality of an asset. A VERIFIED profile does not mean: the asset is safe, the issuer is solvent, the token is a good investment, a regulator has approved it, legal enforceability is guaranteed in every jurisdiction. It only means the indexed rights profile is well supported by the evidence available to Varp."},{"slug":"concepts/rights-diff","title":"Rights Diff","group":"Concepts","headings":["Why it matters","Comparison rules","Intended users"],"text":"Rights Diff compares two or more tokenized assets using the same normalized rights vocabulary. Why it matters Users should not need to read dozens of documents to understand that two tokens referencing the same underlying stock have different rights. A comparison can make the difference obvious. Right Token A Token B Ownership Direct Indirect Voting Yes No Dividend Yes Yes Transfer Permissioned Permissionless Redemption Yes No DeFi Restricted Supported Comparison rules Rights Diff compares normalized fields, not token names or marketing descriptions. The output should highlight: equal rights, different rights, restrictions, unknown fields, verification differences, source conflicts. Intended users Rights Diff is especially useful for: wallets, exchanges, DeFi protocols, asset issuers, developers, users evaluating alternative tokenized representations."},{"slug":"system/how-varp-works","title":"How Varp Works","group":"System","headings":["Step 1: Asset lookup","Step 2: Onchain evidence","Step 3: Offchain evidence","Step 4: Rights normalization","Step 5: Verification","Step 6: Profile delivery","Step 7: Change tracking"],"text":"Varp follows a simple evidence to rights pipeline. Step 1: Asset lookup The user submits: text Copy chain + token contract address Varp resolves the asset identity and loads any existing profile. Step 2: Onchain evidence Varp reads relevant blockchain data such as: token standard, contract state, transfer restrictions, whitelist or allowlist behavior, pause and freeze mechanisms, mint and burn permissions, admin roles, ownership, upgradeability, relevant events. Step 3: Offchain evidence Varp indexes authoritative documentation such as: issuer documentation, offering documents, terms and conditions, custodian documentation, legal disclosures, corporate action documentation, eligibility rules. Step 4: Rights normalization The Rights Engine converts raw observations into a common schema. Example: text Copy Document says: only approved investors may receive the token. Contract says: transfer recipient must pass allowlist check. Normalized result: transfer.permissioned = true transfer.whitelist_required = true Step 5: Verification The Verification Engine checks whether the major evidence sources agree. It then assigns: Verified, Partially Verified, Unverified, or Conflict. Step 6: Profile delivery The final Rights Profile is exposed through: the Varp dashboard, the Varp API, comparison views, and optionally an onchain profile anchor. Step 7: Change tracking When important evidence changes, Varp creates a new profile version and records the change. text Copy New contract state or New authoritative document | v Re-evaluate profile | v New version + change record"},{"slug":"system/data-sources","title":"Data Sources","group":"System","headings":["Onchain Sources","Offchain Sources","Source priority","Evidence provenance"],"text":"Varp combines onchain and offchain sources because neither layer is sufficient by itself. Onchain Sources The blockchain provides technical evidence about how the token currently behaves. Varp may inspect: contract address, token standard, transfer logic, allowlist or whitelist checks, pause controls, freeze controls, mint permissions, burn permissions, role based access control, owner/admin addresses, proxy and upgradeability configuration, emitted events, relevant contract state. Offchain Sources Documents define legal and economic meaning that may not exist in contract storage. Varp may index: issuer documentation, offering documents, terms and conditions, custodian documentation, legal disclosures, investor eligibility requirements, redemption documentation, corporate action documentation. Source priority Not every source has equal authority. Varp should prefer, where available: authoritative issuer or legal documentation, custodian documentation, directly observable onchain behavior, official technical documentation, secondary explanatory material. Secondary sources can help discovery, but important rights should not be marked Verified solely from unofficial summaries. Evidence provenance For every material claim, Varp should retain: source name, source type, source reference or URL, time observed, affected rights, extraction or observation note. This allows a user to understand where a claim came from instead of receiving an unexplained label."},{"slug":"system/architecture","title":"System Architecture","group":"System","headings":["Frontend","Backend","Database","Blockchain Indexer","Document Layer","Rights Engine","Verification Engine"],"text":"The architecture is intentionally simple. text Copy +----------------------+ | Dashboard | +----------+-----------+ | v +----------------------+ | REST API | +----------+-----------+ | +-------------+-------------+ | | v v +----------------+ +------------------+ | Rights Engine | | Verification | | | -------- | Engine | +-------+--------+ +---------+--------+ | | +-------+---------+ +--------+---------+ | | | | v v v v +---------------+ +---------------+ +---------------+ | Blockchain | | Document | | PostgreSQL | | Indexer | | Parser/Index | | | +---------------+ +---------------+ +---------------+ | v RH Chain Optional: Rights Profile hash / version metadata - Varp Registry contract Frontend The dashboard presents: asset search, asset overview, rights, restrictions, DeFi compatibility, verification state, sources, last updated time, Rights Diff. Backend The backend coordinates: asset lookup, profile retrieval, normalization, comparison, verification, history. Database The database stores: assets, rights profiles, evidence sources, verification states, historical versions, change records. Blockchain Indexer The indexer reads the technical behavior of supported contracts. It does not decide legal meaning by itself. Document Layer The document layer stores and extracts rights related information from authoritative materials. Rights Engine The Rights Engine converts heterogeneous evidence into the Varp schema. Verification Engine The Verification Engine checks completeness and consistency across evidence sources. The system is evidence first: a normalized field should be traceable to the information used to derive it."},{"slug":"system/onchain-registry","title":"Onchain Registry Concept","group":"System","headings":["Purpose","Minimal conceptual record","Roles","Update flow","Events","What the registry does not do"],"text":"The source product is primarily an information and verification layer . For a build that also requires a smart contract, Varp can add one minimal onchain component without changing that core idea. The contract should be a non custodial Rights Registry , not a tokenization, trading, or custody contract. Purpose The registry anchors the identity and version of a Rights Profile onchain. It can answer: which asset a profile refers to, which profile version is current, who published or verified the update, when it was updated, what verification state was recorded, which offchain profile hash or URI corresponds to the version. Minimal conceptual record text Copy Asset: - chain identifier - token address Profile anchor: - profile hash - optional metadata URI - verification status - version - updated timestamp The full legal and technical profile remains offchain because it is larger, changes over time, and may contain source references that are not appropriate for contract storage. Roles A simple model can use: Admin : manages authorized publishers/verifiers. Publisher / Verifier : publishes or updates profile anchors. Keep governance intentionally simple and limited to the roles required by the product. Update flow text Copy Evidence changes | v Varp creates a new Rights Profile | v Profile content is hashed | v Registry stores the new hash + status + version | v Event records the update Events The contract should conceptually expose events for: asset registration, profile update, verification status update, publisher authorization changes. Events make the history easy to index. What the registry does not do The registry does not: hold user funds, custody tokenized assets, mint stock tokens, execute trades, guarantee legal enforceability, decide whether an asset is a good investment. Its job is only to create a simple tamper evident anchor for Varp's rights intelligence."},{"slug":"product/dashboard","title":"Dashboard","group":"Product","headings":["Search","Asset Overview","Rights","Restrictions","DeFi","Sources","Conflicts"],"text":"The dashboard should remain extremely simple. Search Primary input: text Copy Enter token address... The user should not need to understand the internal system before using Varp. Asset Overview The result page should show: asset name, underlying asset, token type, contract address, current verification badge, last verified time. Rights Example: text Copy Ownership: Indirect Voting: No Dividends: Yes Redemption: Yes Restrictions Example: text Copy Transfer: Permissioned KYC: Required Eligible wallets: Whitelist Geographic restrictions: Conditional DeFi Example: text Copy Collateral: Restricted Lending: Unknown DEX: Restricted Smart contracts: Restricted Sources The dashboard should expose the categories of evidence behind the profile: issuer documentation, custodian documentation, legal/offering documentation, onchain contract analysis. Conflicts If Varp detects a conflict, it should be visually obvious. The dashboard should explain: which field is in conflict, what the documentation says, what Varp observes onchain, when each source was last checked. The goal is clarity, not a complex analytics interface."},{"slug":"product/api","title":"API","group":"Product","headings":["Complete asset profile","Rights only","Restrictions","Verification","Changes","Compare","Health","API principle"],"text":"The API exposes the same normalized information used by the dashboard. Complete asset profile http Copy GET /v1/assets/{chain}/{address} Returns the complete Rights Profile. Rights only http Copy GET /v1/assets/{chain}/{address}/rights Returns normalized rights information. Restrictions http Copy GET /v1/assets/{chain}/{address}/restrictions Returns transfer, eligibility, geographic, KYC, whitelist, and related restrictions. Verification http Copy GET /v1/assets/{chain}/{address}/verification Returns: current verification state, evidence summary, source references, last updated time, unresolved issues or conflicts. Changes http Copy GET /v1/assets/{chain}/{address}/changes Returns historical rights or status changes. Compare http Copy POST /v1/compare Compares two or more supported assets using normalized rights fields. Health http Copy GET /v1/health Returns basic service health. API principle The API should expose explicit unknown or unresolved states instead of silently returning false. For example: text Copy redemption = unknown is different from: text Copy redemption = false That distinction is important for rights intelligence."},{"slug":"product/use-cases","title":"Use Cases","group":"Product","headings":["Wallets","DeFi Protocols","Exchanges","Asset Issuers","Developers","Users"],"text":"Wallets Before displaying or deeply integrating a token, a wallet can ask: What rights and restrictions does this asset have? The wallet can use Varp to surface transfer restrictions, verification state, or redemption information. DeFi Protocols Before accepting an asset as collateral or allowing it in a pool, a protocol can ask: Can this token actually interact with the protocol, and are there restrictions? Varp can expose permission requirements and contract level limitations. Exchanges Before listing or presenting a token, an exchange can ask: What does this token represent and what restrictions apply? Asset Issuers Issuers can publish or reference a standardized machine readable rights profile instead of requiring every integrator to interpret documents independently. Developers Developers can query one schema instead of building a custom research process for every tokenized asset. Users Users can answer the most basic question: What does this token actually give me?"},{"slug":"trust/security-and-limitations","title":"Security, Trust & Limitations","group":"Trust","headings":["Evidence first design","Conflict is a valid result","Smart contract security","Legal limitation","Financial limitation","Data freshness"],"text":"Varp is a rights intelligence system, so correctness and provenance matter more than pretending every field is certain. Evidence first design Every important claim should have supporting evidence. Varp should avoid: silently inferring legal rights from token names, equating ERC compatibility with unrestricted transferability, marking unknown fields as false, treating unofficial summaries as authoritative, calling a profile Verified when major contradictions remain. Conflict is a valid result A disagreement between documentation and live contract behavior should not be hidden. CONFLICT is a first class output. Smart contract security If the optional Varp Registry contract is used, its attack surface should remain minimal. The registry should not custody assets or user funds. Its main security concerns are: unauthorized profile updates, compromised publisher/admin keys, incorrect status publication, accidental overwrite or version confusion. A versioned update history and explicit authorization model reduce ambiguity. Legal limitation Varp organizes evidence and describes rights based on available sources. It does not provide legal advice and cannot guarantee that a right will be enforceable in every jurisdiction. Financial limitation A verification badge does not represent investment quality, price stability, issuer solvency, liquidity, or future performance. Data freshness Rights intelligence becomes stale if: contracts are upgraded, admins change configuration, issuer terms change, corporate actions occur, redemption terms change, assets are suspended or redeemed. Every profile should therefore include a last verified timestamp and change history."},{"slug":"reference/status-reference","title":"Rights Status Reference","group":"Reference","headings":["Verification","Ownership","Generic right state","Transfer","Lifecycle"],"text":"This page provides a compact vocabulary for Varp. Verification Status Meaning VERIFIED Core onchain behavior and authoritative documentation agree. PARTIALLY_VERIFIED Some important rights are confirmed, but meaningful gaps remain. UNVERIFIED Evidence is insufficient. CONFLICT Important evidence sources disagree. Ownership Value Meaning DIRECT Direct ownership structure. INDIRECT Rights are mediated through an issuer, custodian, SPV, or similar structure. BENEFICIAL_INTEREST Beneficial/economic claim without direct registered ownership. SYNTHETIC Exposure without ownership of the underlying asset. UNKNOWN Not sufficiently established. Generic right state Where useful, individual rights can use: YES NO CONDITIONAL RESTRICTED UNKNOWN Transfer Useful flags include: permissioned whitelist_required kyc_required geographic_restrictions investor_eligibility_restrictions paused frozen Lifecycle ACTIVE RESTRICTED SUSPENDED CORPORATE_ACTION REDEEMING REDEEMED"},{"slug":"reference/example-rights-profile","title":"Example Rights Profile","group":"Reference","headings":["Important interpretation rule"],"text":"The exact schema can evolve. The important goal is a consistent vocabulary. json Copy { asset : { name : XYZ Stock Token , symbol : XYZ , chain : rh-chain , token_address : 0x... , asset_type : tokenized_security , underlying : XYZ Corp common stock }, ownership : { type : indirect , legal_claim : true }, economic_rights : { dividends : true , interest : false , yield : unknown , redemption : true , distribution_rights : true }, governance_rights : { voting : false , governance_participation : false , corporate_action_participation : true }, transfer : { permissioned : true , whitelist_required : true , kyc_required : true , geographic_restrictions : conditional , investor_eligibility_restrictions : true }, defi : { smart_contract_transfer : restricted , collateral : restricted , lending : unknown , dex : restricted , permissionless_compatible : false }, lifecycle : { status : active }, verification : { status : verified , last_updated : timestamp , sources : [ issuer_documentation , custodian_documentation , onchain_analysis ] } } Important interpretation rule A field being unknown is not equivalent to false . Varp should preserve uncertainty instead of manufacturing certainty."},{"slug":"glossary","title":"Glossary","group":"Reference","headings":["Asset","Underlying Asset","Rights Profile","Evidence","Onchain Evidence","Offchain Evidence","Rights Engine","Verification Engine","Rights Diff","Permissioned Transfer","Whitelist / Allowlist","Redemption","Corporate Action","Conflict","Profile Anchor"],"text":"Asset The tokenized financial instrument being described by Varp. Underlying Asset The stock or other real world asset referenced by the tokenized asset. Rights Profile The normalized machine readable representation of ownership, economic, governance, transfer, redemption, DeFi, lifecycle, and verification information. Evidence Information used to support a Rights Profile field. Onchain Evidence Evidence observed directly from blockchain contracts, state, events, roles, permissions, and behavior. Offchain Evidence Evidence from issuer, custodian, legal, offering, eligibility, redemption, or corporate action documents. Rights Engine The system that converts raw evidence into Varp's normalized rights schema. Verification Engine The system that determines whether evidence is complete and internally consistent. Rights Diff A structured comparison of the rights and restrictions of two or more tokenized assets. Permissioned Transfer A transfer model where movement of the token depends on approval, identity, allowlists, jurisdiction, eligibility, or other conditions. Whitelist / Allowlist A list or rule set that determines which addresses are allowed to hold, receive, or interact with an asset. Redemption The process through which a holder can exchange or convert the token according to the asset's documented terms. Corporate Action An issuer related event such as a vote, distribution, split, merger, redemption, or other action affecting holder rights. Conflict A Varp verification state used when important evidence sources disagree. Profile Anchor A compact onchain record containing a profile hash, version, status, or metadata reference for a Rights Profile."}]</script>
+    <script type="module" src="assets/js/docs.js"></script>
+  </body>
+</html>

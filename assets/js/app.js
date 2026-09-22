@@ -1,6 +1,8 @@
 import { BrowserProvider, Contract, JsonRpcProvider, getAddress, isAddress, keccak256, toUtf8Bytes } from "ethers";
 import { CONTRACT_CONFIG } from "./config.js";
 import { REGISTRY_ABI } from "./registry-abi.js";
+import { emblemSvg } from "./emblems.js";
+import { findProfile, rightsProfiles, toRightsProfileJson, verificationStates } from "./profiles-data.js";
 
 const verificationLabels = ["Unverified", "Partially Verified", "Verified", "Conflict"];
 const verificationClasses = ["status-unverified", "status-partial", "status-verified", "status-conflict"];
@@ -74,7 +76,7 @@ function showTransaction(message, hash = "", type = "pending") {
 }
 
 function activateTab(name, updateHash = true) {
-  const validName = ["profile", "publisher", "admin"].includes(name) ? name : "profile";
+  const validName = ["profile", "library", "diff", "publisher", "admin"].includes(name) ? name : "profile";
   document.querySelectorAll("[data-tab]").forEach((tab) => {
     const active = tab.dataset.tab === validName;
     tab.setAttribute("aria-selected", String(active));
@@ -205,6 +207,220 @@ function renderProfile(assetAddress, version, currentVersion, profile, metadataR
     </div>`;
 }
 
+const valueTone = (value) => {
+  const text = String(value).toLowerCase();
+  if (text === "verified") return "tone-yes";
+  if (text === "conflict") return "tone-conflict";
+  if (/unknown|unresolved|not observed|unverified/.test(text)) return "tone-unknown";
+  if (/documented as/.test(text)) return "tone-conflict";
+  if (/^(yes|supported|active)$/.test(text)) return "tone-yes";
+  if (/^no$/.test(text)) return "tone-no";
+  return "tone-limited";
+};
+
+const rightsSections = [
+  ["Ownership", "ownership", [["Ownership type", "type"], ["Beneficial interest", "beneficialInterest"]]],
+  ["Economic rights", "economicRights", [["Dividends", "dividends"], ["Interest", "interest"], ["Yield", "yield"], ["Redemption", "redemption"], ["Distribution rights", "distributionRights"]]],
+  ["Governance", "governanceRights", [["Voting", "voting"], ["Governance participation", "governanceParticipation"], ["Corporate actions", "corporateActionParticipation"]]],
+  ["Transfer and restrictions", "transfer", [["Transfer mode", "mode"], ["KYC", "kyc"], ["Whitelist", "whitelist"], ["Geographic restrictions", "geographicRestrictions"], ["Investor eligibility", "investorEligibility"]]],
+  ["DeFi compatibility", "defi", [["Smart contract transfer", "smartContractTransfer"], ["Collateral", "collateral"], ["Lending", "lending"], ["DEX", "dex"], ["Permissionless DeFi", "permissionlessCompatibility"]]],
+  ["Lifecycle", "lifecycle", [["Status", "status"], ["Corporate actions", "corporateActions"]]],
+];
+
+function profileAnchor(profile) {
+  const json = toRightsProfileJson(profile);
+  const serialized = JSON.stringify(canonicalJson(json));
+  return { json, serialized, hash: keccak256(toUtf8Bytes(serialized)) };
+}
+
+function renderLibraries() {
+  document.querySelectorAll("[data-profile-library]").forEach((container, containerIndex) => {
+    container.innerHTML = rightsProfiles
+      .map((profile) => {
+        const state = verificationStates[profile.verification.status];
+        return `<button class="library-card" type="button" data-open-profile="${profile.id}">
+          <span class="profile-emblem library-emblem">${emblemSvg(profile.emblem, `lib${containerIndex}-${profile.id}`)}</span>
+          <span class="library-card-body">
+            <span class="library-card-top"><strong>${escapeHtml(profile.asset)}</strong><span class="profile-symbol">${escapeHtml(profile.symbol)}</span></span>
+            <span class="library-card-summary">${escapeHtml(profile.summary)}</span>
+            <span class="status-badge ${state.className}">${escapeHtml(state.label)}</span>
+          </span>
+        </button>`;
+      })
+      .join("");
+  });
+}
+
+document.addEventListener("click", (event) => {
+  const trigger = event.target.closest("[data-open-profile]");
+  if (trigger) openProfile(trigger.dataset.openProfile);
+});
+
+function openProfile(id) {
+  const profile = findProfile(id);
+  if (!profile) return false;
+  renderRightsProfile(profile);
+  history.replaceState(null, "", `${window.location.pathname}?profile=${profile.id}#profile`);
+  activateTab("profile", false);
+  setSearchMessage(`Opened the ${profile.asset} Rights Profile.`, "success");
+  return true;
+}
+
+function renderRightsProfile(profile) {
+  const state = verificationStates[profile.verification.status];
+  const anchor = profileAnchor(profile);
+  const currentVersion = profile.history[0].version;
+
+  const sections = rightsSections
+    .map(([title, key, rows]) => `<article class="panel rights-panel">
+        <p class="panel-kicker">${escapeHtml(title)}</p>
+        <dl class="rights-list">${rows
+          .map(([label, field]) => {
+            const value = profile[key][field];
+            return `<div class="rights-row"><dt>${escapeHtml(label)}</dt><dd><span class="value-chip ${valueTone(value)}">${escapeHtml(value)}</span></dd></div>`;
+          })
+          .join("")}</dl>
+      </article>`)
+    .join("");
+
+  const conflicts = profile.conflicts
+    .map((conflict) => `<article class="panel conflict-panel">
+        <p class="panel-kicker">Conflict detected</p>
+        <h3 class="panel-heading">${escapeHtml(conflict.field)}</h3>
+        <div class="conflict-columns">
+          <div class="conflict-column"><span class="field-label">Documentation says</span><p>${escapeHtml(conflict.documented)}</p></div>
+          <div class="conflict-column"><span class="field-label">Observed onchain</span><p>${escapeHtml(conflict.observed)}</p></div>
+        </div>
+        <p class="metadata-note conflict-checked">Both sources last checked ${escapeHtml(conflict.checked)}.</p>
+      </article>`)
+    .join("");
+
+  const sources = profile.sources
+    .map((source) => `<article class="source-card">
+        <div class="source-topline"><div><p class="panel-kicker">Evidence source</p><h4 class="source-name">${escapeHtml(source.name)}</h4></div><span class="source-tag">${escapeHtml(source.type)}</span></div>
+        <p class="source-description">${escapeHtml(source.description)}</p>
+        <dl class="rights-list">
+          <div class="source-meta-row"><dt>Supports</dt><dd>${escapeHtml(source.supports)}</dd></div>
+          <div class="source-meta-row"><dt>Checked</dt><dd>${escapeHtml(source.checked)}</dd></div>
+        </dl>
+      </article>`)
+    .join("");
+
+  const versions = profile.history
+    .map((entry) => `<li class="history-item"><span class="history-version">v${entry.version}</span><div><p>${escapeHtml(entry.change)}</p><span>${escapeHtml(entry.date)}</span></div></li>`)
+    .join("");
+
+  profileView.innerHTML = `
+    <button class="back-link" type="button" data-back-library>← All profiles</button>
+    <div class="panel profile-header library-profile-header">
+      <div class="profile-identity">
+        <span class="profile-emblem profile-emblem-lg">${emblemSvg(profile.emblem, `view-${profile.id}`)}</span>
+        <div>
+          <p class="panel-kicker">Rights Profile · ${escapeHtml(profile.symbol)} · Version ${currentVersion}</p>
+          <h2 class="asset-name">${escapeHtml(profile.asset)}</h2>
+          <p class="asset-underlying">${escapeHtml(profile.underlying)} · ${escapeHtml(profile.tokenType)}</p>
+          <p class="query-value">${escapeHtml(profile.summary)}</p>
+        </div>
+      </div>
+      <div class="profile-header-side">
+        <span class="status-badge ${state.className}">${escapeHtml(state.label)}</span>
+        <p class="stat-label">Last checked ${escapeHtml(profile.verification.lastChecked)}</p>
+      </div>
+    </div>
+
+    <div class="panel verification-note ${state.className}-note">
+      <strong>${escapeHtml(profile.verification.summary)}</strong>
+      <span>${escapeHtml(state.description)}</span>
+    </div>
+
+    <div class="stat-grid">
+      <article class="stat-card"><p class="stat-label">Ownership</p><p class="stat-value">${escapeHtml(profile.ownership.type)}</p></article>
+      <article class="stat-card"><p class="stat-label">Transfer</p><p class="stat-value">${escapeHtml(profile.transfer.mode)}</p></article>
+      <article class="stat-card"><p class="stat-label">Lifecycle</p><p class="stat-value">${escapeHtml(profile.lifecycle.status)}</p></article>
+    </div>
+
+    ${conflicts ? `<div class="conflict-stack">${conflicts}</div>` : ""}
+
+    <div class="rights-grid">${sections}</div>
+
+    <div class="view-header section-gap"><div><p class="panel-kicker">Evidence</p><h3 class="view-title">Sources</h3></div><p class="view-description">Where each claim comes from, and when it was last checked.</p></div>
+    <div class="source-grid">${sources}</div>
+
+    <div class="rights-grid onchain-grid section-gap">
+      <article class="panel">
+        <p class="panel-kicker">Change history</p>
+        <h3 class="panel-heading">Versions</h3>
+        <ol class="history-list">${versions}</ol>
+      </article>
+      <article class="panel anchor-panel">
+        <p class="panel-kicker">Onchain anchor</p>
+        <h3 class="panel-heading">Profile hash</h3>
+        <dl class="rights-list">
+          <div class="rights-row"><dt>keccak256</dt><dd class="hash-value" title="${anchor.hash}">${escapeHtml(shortenAddress(anchor.hash, 12, 10))}</dd></div>
+          <div class="rights-row"><dt>Status code</dt><dd>${state.index} · ${escapeHtml(verificationLabels[state.index])}</dd></div>
+          <div class="rights-row"><dt>Registry</dt><dd><a href="${explorerAddressUrl(CONTRACT_CONFIG.rightsRegistryAddress)}" target="_blank" rel="noreferrer">${escapeHtml(shortenAddress(CONTRACT_CONFIG.rightsRegistryAddress))} ↗</a></dd></div>
+        </dl>
+        <p class="metadata-note">A publisher wallet can anchor this exact hash on Robinhood Chain.</p>
+        <div class="anchor-actions">
+          <button class="primary-button" type="button" data-load-publisher>Load into Publisher Console</button>
+          <button class="secondary-button" type="button" data-download-json>Download JSON</button>
+        </div>
+        <details class="json-details"><summary>View profile JSON</summary><pre>${escapeHtml(JSON.stringify(anchor.json, null, 2))}</pre></details>
+      </article>
+    </div>`;
+
+  profileView.querySelector("[data-back-library]").addEventListener("click", () => activateTab("library"));
+  profileView.querySelector("[data-load-publisher]").addEventListener("click", () => {
+    profileJsonInput.value = JSON.stringify(anchor.json, null, 2);
+    document.querySelector("#profile-status").value = String(state.index);
+    calculateProfileHash();
+    activateTab("publisher");
+    document.querySelector("#publish-address").focus();
+  });
+  profileView.querySelector("[data-download-json]").addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(anchor.json, null, 2)], { type: "application/json" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `${profile.id}-rights-profile-v${currentVersion}.json`;
+    link.click();
+    window.setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+  });
+}
+
+const diffA = document.querySelector("#diff-a");
+const diffB = document.querySelector("#diff-b");
+
+function renderDiff() {
+  const a = findProfile(diffA.value);
+  const b = findProfile(diffB.value);
+  if (!a || !b) return;
+  const rows = [
+    ["Verification", verificationStates[a.verification.status].label, verificationStates[b.verification.status].label],
+    ...rightsSections.flatMap(([, key, fields]) => fields.map(([label, field]) => [label, a[key][field], b[key][field]])),
+  ];
+  const differences = rows.filter(([, left, right]) => left !== right).length;
+  document.querySelector("#diff-result").innerHTML = `
+    <div class="compare-head"><span>${differences} of ${rows.length} fields differ</span><span>${escapeHtml(a.asset)}</span><span>${escapeHtml(b.asset)}</span></div>
+    ${rows
+      .map(([label, left, right]) => {
+        const different = left !== right;
+        const chip = different ? `<span class="difference-chip">Differs</span>` : "";
+        return `<div class="compare-row${different ? " is-different" : ""}"><span class="compare-label">${escapeHtml(label)}${chip}</span><span class="compare-value"><span class="value-chip ${valueTone(left)}">${escapeHtml(left)}</span></span><span class="compare-value"><span class="value-chip ${valueTone(right)}">${escapeHtml(right)}</span></span></div>`;
+      })
+      .join("")}`;
+}
+
+function initDiff() {
+  const options = rightsProfiles.map((profile) => `<option value="${profile.id}">${escapeHtml(profile.asset)}</option>`).join("");
+  diffA.innerHTML = options;
+  diffB.innerHTML = options;
+  diffA.value = rightsProfiles[0].id;
+  diffB.value = rightsProfiles[2].id;
+  diffA.addEventListener("change", renderDiff);
+  diffB.addEventListener("change", renderDiff);
+  renderDiff();
+}
+
 async function inspectAsset(assetAddress, requestedVersion = "") {
   const checksumAddress = getAddress(assetAddress);
   lookupButton.disabled = true;
@@ -230,6 +446,7 @@ async function inspectAsset(assetAddress, requestedVersion = "") {
     const metadata = await loadMetadata(profile.metadataURI);
     renderProfile(checksumAddress, version, currentVersion, profile, metadata);
     setSearchMessage(`Loaded profile version ${version} from Robinhood Chain.`, "success");
+    history.replaceState(null, "", `${window.location.pathname}#profile`);
     addressInput.value = checksumAddress;
     document.querySelector("#publish-address").value = checksumAddress;
     activateTab("profile");
@@ -521,7 +738,14 @@ grantForm.addEventListener("submit", async (event) => {
 async function initialize() {
   document.querySelector("#registry-link").href = explorerAddressUrl(CONTRACT_CONFIG.rightsRegistryAddress);
   resetWalletUi();
+  renderLibraries();
+  initDiff();
   activateTab(window.location.hash.slice(1), false);
+  const requestedProfile = new URLSearchParams(window.location.search).get("profile");
+  if (requestedProfile && !openProfile(requestedProfile)) {
+    setSearchMessage("That profile was not found. Pick one from the library.", "warning");
+    activateTab("library");
+  }
   try {
     const [network, blockNumber, code] = await Promise.all([
       publicProvider.getNetwork(),

@@ -55,10 +55,21 @@ document.querySelectorAll("button").forEach((button) => {
       document.querySelector("#profiles")?.scrollIntoView({ behavior: "smooth" });
     });
   }
-
-  if (label === "View") {
-    button.addEventListener("click", () => {
-      window.location.href = "app.html";
-    });
-  }
 });
+
+// Scroll reveal for profile cards and the docs section.
+const revealTargets = document.querySelectorAll(".reveal");
+if (revealTargets.length && "IntersectionObserver" in window) {
+  document.documentElement.classList.add("reveal-ready");
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    },
+    { rootMargin: "0px 0px -10% 0px", threshold: 0.12 },
+  );
+  revealTargets.forEach((target) => observer.observe(target));
+}

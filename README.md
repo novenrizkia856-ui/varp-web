@@ -33,5 +33,11 @@ Open `http://127.0.0.1:4174/app.html`.
 - Admin-only Publisher role grants
 - Explorer links and transaction confirmation states
 - Lazy-loaded wallet bundle and production security headers for Vercel
+- Featured Rights Profiles (`assets/js/profiles-data.js`) open at `app.html?profile=<id>` with rights, sources, history, Rights Diff, and a one-click handoff to the Publisher Console
+- Documentation at `docs.html`, generated from `content/docs/` by `scripts/build-docs.mjs`
+
+## Content scripts
+
+`npm run build` regenerates `docs.html` from `content/docs/` and re-renders the landing profile cards and Docs section (`scripts/render-landing.mjs`) before bundling. Edit the Markdown or `profiles-data.js`, not the generated HTML.
 
 The publisher console canonicalizes JSON by recursively sorting object keys, serializes it, and anchors `keccak256(UTF-8 JSON)` as the profile hash.
