@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" fill="none">
+  <defs>
+    <linearGradient id="petal" x1="400" y1="320" x2="400" y2="70" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff4b19"/>
+      <stop offset=".56" stop-color="#ff3519"/>
+      <stop offset="1" stop-color="#d82a15"/>
+    </linearGradient>
+    <linearGradient id="petalBright" x1="330" y1="390" x2="105" y2="285" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff5a1d"/>
+      <stop offset=".62" stop-color="#ff3419"/>
+      <stop offset="1" stop-color="#e13219"/>
+    </linearGradient>
+    <radialGradient id="hub" cx="0" cy="0" r="1" gradientTransform="translate(370 360) rotate(51) scale(120)">
+      <stop stop-color="#ff6a20"/>
+      <stop offset=".62" stop-color="#ff3d19"/>
+      <stop offset="1" stop-color="#d92c18"/>
+    </radialGradient>
+    <radialGradient id="hole" cx="0" cy="0" r="1" gradientTransform="translate(0 0) rotate(90) scale(28 24)">
+      <stop stop-color="#341a22"/>
+      <stop offset=".65" stop-color="#5b1620"/>
+      <stop offset="1" stop-color="#9b201b" stop-opacity=".4"/>
+    </radialGradient>
+    <filter id="softShadow" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#de391d" flood-opacity=".24"/>
+      <feGaussianBlur stdDeviation=".35"/>
+    </filter>
+    <filter id="holeBlur" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+  </defs>
+  <g filter="url(#softShadow)" transform="rotate(-7 400 400)">
+    <path d="M367 326C372 302 380 278 390 254L324 76C317 57 328 38 348 31L382 20C401 14 418 26 423 46L444 244C431 276 424 303 421 329L367 326Z" fill="url(#petal)"/>
+    <path d="M433 330C448 305 458 278 464 249L469 91C470 72 486 60 504 65L528 73C545 79 552 96 546 113L503 262C485 292 472 316 464 340L433 330Z" fill="url(#petal)"/>
+    <path d="M475 350C497 331 514 310 528 287L607 170C617 155 636 153 649 166L670 187C683 200 680 219 665 229L548 312C526 333 507 352 492 372L475 350Z" fill="url(#petal)"/>
+    <path d="M493 386C520 378 547 365 570 350L684 305C702 298 719 308 721 327L724 355C726 374 713 387 694 386L565 372C536 381 511 391 490 402L493 386Z" fill="url(#petal)"/>
+    <path d="M487 425C512 438 535 453 553 471L649 568C662 581 660 600 644 610L615 627C599 637 582 630 574 613L522 495C506 471 490 452 473 438L487 425Z" fill="url(#petal)"/>
+    <path d="M450 451C463 474 471 499 474 526L483 674C484 693 469 706 450 702L420 696C402 692 393 676 398 658L434 520C437 492 437 470 434 451H450Z" fill="url(#petal)"/>
+    <path d="M404 449C392 476 376 500 355 521L263 613C250 626 230 624 221 608L203 579C193 563 200 546 217 538L335 483C355 465 371 449 383 432L404 449Z" fill="url(#petalBright)"/>
+    <path d="M370 414C342 419 313 420 287 417L121 397C101 395 90 378 96 359L106 327C112 307 132 299 150 309L298 375C328 380 353 381 377 379L370 414Z" fill="url(#petalBright)"/>
+    <ellipse cx="159" cy="356" rx="22" ry="29" transform="rotate(76 159 356)" fill="url(#hole)" filter="url(#holeBlur)"/>
+    <ellipse cx="258" cy="555" rx="25" ry="32" transform="rotate(43 258 555)" fill="url(#hole)" filter="url(#holeBlur)"/>
+    <path d="M127 331C177 345 238 371 298 393" stroke="#ff6b27" stroke-width="7" stroke-linecap="round" opacity=".32"/>
+    <path d="M232 562C273 536 311 510 350 472" stroke="#ff6b27" stroke-width="8" stroke-linecap="round" opacity=".25"/>
+  </g>
+</svg>

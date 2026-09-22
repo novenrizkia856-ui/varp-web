@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Inspect and publish onchain Rights Profiles on Robinhood Chain.">
+    <meta name="theme-color" content="#fff7ed">
+    <title>Varp App | Onchain Rights Registry</title>
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+  </head>
+  <body class="app-shell production-app">
+    <nav class="app-nav" aria-label="Primary navigation">
+      <div class="app-nav-inner">
+        <a class="brand-link" href="index.html" aria-label="Varp home">
+          <img class="rounded-sm" src="assets/images/varp-mark.webp" alt="" width="28" height="28">
+          <span class="font-coolvetica text-xl tracking-wide text-foreground">VARP</span>
+        </a>
+        <div class="app-nav-links wallet-actions">
+          <span class="network-pill"><span class="live-dot" aria-hidden="true"></span>Robinhood Mainnet</span>
+          <button class="nav-pill wallet-button" type="button" id="connect-browser">Browser Wallet</button>
+          <button class="nav-pill nav-pill-accent wallet-button" type="button" id="connect-walletconnect">WalletConnect</button>
+          <button class="nav-pill wallet-button" type="button" id="wallet-account" hidden></button>
+          <button class="nav-pill wallet-button" type="button" id="disconnect-wallet" hidden>Disconnect</button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="app-main">
+      <section class="app-hero production-hero" aria-labelledby="app-title">
+        <div>
+          <p class="app-eyebrow">Live on Robinhood Chain</p>
+          <h1 class="app-title" id="app-title">Rights data you can <span>verify onchain.</span></h1>
+          <p class="app-lede">Look up any registered token to inspect its latest anchored profile, verification state, publisher, and metadata evidence.</p>
+        </div>
+
+        <div class="search-panel">
+          <p class="panel-kicker">Registry lookup</p>
+          <form class="search-form" id="token-search" novalidate>
+            <label class="field-label" for="token-address">Token contract address</label>
+            <div class="search-row production-search-row">
+              <input class="search-input" id="token-address" name="tokenAddress" placeholder="0x…" autocomplete="off" spellcheck="false" inputmode="text" aria-describedby="search-note search-message">
+              <input class="version-input" id="profile-version" name="profileVersion" type="number" min="1" step="1" placeholder="Latest" aria-label="Profile version, blank for latest">
+              <button class="primary-button" type="submit" id="lookup-button">Inspect</button>
+            </div>
+            <p class="search-note" id="search-note">Reads directly from the deployed Varp Rights Registry. Leave version blank for the latest profile.</p>
+            <p class="form-message" id="search-message" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
+      <section class="live-banner" aria-label="Deployment information">
+        <div><span class="live-dot" aria-hidden="true"></span><strong>Registry live</strong></div>
+        <a id="registry-link" target="_blank" rel="noreferrer">0xef1417…A81C3</a>
+        <span>Chain ID 4663</span>
+        <span id="rpc-status">Checking RPC…</span>
+      </section>
+
+      <section class="workspace" aria-label="Varp workspace">
+        <div class="tabs" role="tablist" aria-label="Registry views">
+          <button class="tab-button" id="tab-profile" role="tab" aria-selected="true" aria-controls="view-profile" data-tab="profile">Rights Profile</button>
+          <button class="tab-button" id="tab-publisher" role="tab" aria-selected="false" aria-controls="view-publisher" data-tab="publisher">Publisher Console</button>
+          <button class="tab-button" id="tab-admin" role="tab" aria-selected="false" aria-controls="view-admin" data-tab="admin">Admin</button>
+        </div>
+
+        <section class="view" id="view-profile" role="tabpanel" aria-labelledby="tab-profile" data-view="profile">
+          <div class="empty-state">
+            <span class="empty-icon" aria-hidden="true">↗</span>
+            <h2>Inspect a registered asset</h2>
+            <p>Enter a token contract address above. Varp will read its anchored Rights Profile from Robinhood Chain.</p>
+          </div>
+        </section>
+
+        <section class="view" id="view-publisher" role="tabpanel" aria-labelledby="tab-publisher" data-view="publisher" hidden>
+          <div class="view-header">
+            <div><p class="panel-kicker">Publisher Console</p><h2 class="view-title">Anchor rights evidence</h2></div>
+            <p class="view-description">Connect a wallet with the Publisher role. Every action below creates a Robinhood Chain transaction.</p>
+          </div>
+          <div class="permission-notice" id="publisher-permission">Connect a publisher wallet to register assets and publish profiles.</div>
+          <div class="console-grid">
+            <form class="panel console-form" id="register-form">
+              <p class="panel-kicker">Step 1</p>
+              <h3 class="panel-heading">Register asset</h3>
+              <label class="field-label" for="register-address">Token contract address</label>
+              <input class="console-input" id="register-address" placeholder="0x…" autocomplete="off" required>
+              <button class="primary-button" type="submit">Register asset</button>
+            </form>
+
+            <form class="panel console-form" id="publish-form">
+              <p class="panel-kicker">Step 2</p>
+              <h3 class="panel-heading">Publish profile</h3>
+              <label class="field-label" for="publish-address">Registered token address</label>
+              <input class="console-input" id="publish-address" placeholder="0x…" autocomplete="off" required>
+              <label class="field-label" for="metadata-uri">Metadata URI</label>
+              <input class="console-input" id="metadata-uri" placeholder="ipfs://… or https://…" autocomplete="off" required>
+              <label class="field-label" for="profile-json">Profile JSON</label>
+              <textarea class="console-input console-textarea" id="profile-json" rows="8" placeholder='{"asset":"…","rights":{…}}' required></textarea>
+              <div class="form-two-columns">
+                <label><span class="field-label">Verification status</span>
+                  <select class="console-input" id="profile-status">
+                    <option value="0">Unverified</option>
+                    <option value="1">Partially Verified</option>
+                    <option value="2">Verified</option>
+                    <option value="3">Conflict</option>
+                  </select>
+                </label>
+                <label><span class="field-label">Computed profile hash</span>
+                  <input class="console-input hash-preview" id="profile-hash" readonly value="Enter valid JSON">
+                </label>
+              </div>
+              <button class="primary-button" type="submit">Publish profile</button>
+            </form>
+          </div>
+        </section>
+
+        <section class="view" id="view-admin" role="tabpanel" aria-labelledby="tab-admin" data-view="admin" hidden>
+          <div class="view-header">
+            <div><p class="panel-kicker">Role administration</p><h2 class="view-title">Manage publishers</h2></div>
+            <p class="view-description">Only a registry admin can grant the Publisher role. Role changes are permanent onchain records.</p>
+          </div>
+          <div class="permission-notice" id="admin-permission">Connect an admin wallet to manage publisher access.</div>
+          <form class="panel console-form compact-form" id="grant-form">
+            <label class="field-label" for="publisher-address">Publisher wallet address</label>
+            <input class="console-input" id="publisher-address" placeholder="0x…" autocomplete="off" required>
+            <button class="primary-button" type="submit">Grant Publisher role</button>
+          </form>
+        </section>
+      </section>
+
+      <section class="transaction-panel" id="transaction-panel" hidden aria-live="polite">
+        <span id="transaction-message"></span>
+        <a id="transaction-link" target="_blank" rel="noreferrer" hidden>View transaction ↗</a>
+      </section>
+    </main>
+
+    <script type="module" src="assets/js/app.js"></script>
+  </body>
+</html>

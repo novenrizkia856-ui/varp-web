@@ -1,0 +1,17 @@
+{
+  "name": "varp-web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "npm run build && node scripts/serve.mjs dist"
+  },
+  "dependencies": {
+    "@walletconnect/ethereum-provider": "^2.25.0",
+    "ethers": "^6.17.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.12"
+  }
+}

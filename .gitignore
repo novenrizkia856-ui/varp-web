@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Production build
+dist/
+
+# Environment variables and local secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Tool caches and test output
+.cache/
+.parcel-cache/
+.eslintcache
+coverage/
+
+# Editor settings
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+Desktop.ini
