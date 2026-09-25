@@ -1,10 +1,11 @@
 // Hero mark rendered as a real 3D object. Each petal of the VARP burst is a thin,
-// paper like sheet with a satin finish. Loaded lazily by hero-effects.js.
+// curved sheet like a real flower petal, with a satin finish. Loaded lazily by hero-effects.js.
 import {
   AmbientLight,
+  BufferGeometry,
   Color,
   DirectionalLight,
-  ExtrudeGeometry,
+  Float32BufferAttribute,
   Group,
   Mesh,
   MeshPhysicalMaterial,
@@ -12,21 +13,23 @@ import {
   PerspectiveCamera,
   PMREMGenerator,
   Scene,
-  Shape,
   SRGBColorSpace,
   WebGLRenderer,
 } from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-import { MARK_PETALS, markBounds, petalOutline } from "./varp-mark-geometry.js";
+import { MARK_PETALS, markBounds, tangentAngle } from "./varp-mark-geometry.js";
 
-// Sheet thickness in mark units, with a hairline bevel so the edges catch light.
-const THICKNESS = 0.16;
-const BEVEL = 0.05;
+// Sheet thickness in mark units.
+const THICKNESS = 0.14;
+// How far a petal curls up toward its tip, as a share of its length.
+const CURL = 0.38;
+// How far the side edges rise above the midrib, as a share of the widest half width.
+const TROUGH = 0.42;
 const FOV = 26;
 // Share of the canvas half width the resting mark should fill.
 const FILL = 0.68;
 // Outer ends lift toward the viewer so the burst sits like an opening flower.
-const CUP = 0.26;
+const CUP = 0.16;
 
 const easeOutBack = (t) => {
   const c = 1.45;
@@ -35,21 +38,59 @@ const easeOutBack = (t) => {
 const easeOutCubic = (t) => 1 - (1 - t) ** 3;
 const clamp01 = (value) => Math.min(1, Math.max(0, value));
 
-// Each petal is the flat mark outline extruded into a thin sheet.
+// Half width of the flat tapered capsule at distance x from the hub.
+function halfWidth({ r0, r1, w0, w1, phi }, x) {
+  const circle = (center, radius) => Math.sqrt(Math.max(0, radius * radius - (x - center) ** 2));
+  const xa = r0 + w0 * Math.cos(phi);
+  const xb = r1 + w1 * Math.cos(phi);
+  const side = x >= xa && x <= xb ? w0 * Math.sin(phi) + ((w1 - w0) * Math.sin(phi) * (x - xa)) / (xb - xa) : 0;
+  return Math.max(circle(r0, w0), circle(r1, w1), side);
+}
+
+// A petal is a grid over the flat outline, bent into a curl along its length and a
+// trough across it, then given a thin back face and rim. Seen face on and unbent,
+// its outline matches the 2D mark.
 function petalGeometry(petal) {
-  const shape = new Shape();
-  petalOutline(petal, BEVEL, 40).forEach(([x, y], index) => (index ? shape.lineTo(x, y) : shape.moveTo(x, y)));
-  shape.closePath();
-  const geometry = new ExtrudeGeometry(shape, {
-    depth: THICKNESS,
-    bevelEnabled: true,
-    bevelThickness: BEVEL,
-    bevelSize: BEVEL,
-    bevelSegments: 2,
-    curveSegments: 1,
-  });
-  // Pivot each petal on its root so the bloom and cup rotate from the hub.
-  geometry.translate(-petal.r0, 0, -THICKNESS / 2);
+  const shape = { ...petal, phi: tangentAngle(petal) };
+  const start = petal.r0 - petal.w0;
+  const end = petal.r1 + petal.w1;
+  const length = end - petal.r0;
+  const widest = Math.max(petal.w0, petal.w1);
+  const along = 64;
+  const across = 20;
+  const lift = (x, y) => CURL * length * clamp01((x - petal.r0) / length) ** 2 + (TROUGH * y * y) / widest;
+
+  const positions = [];
+  for (const face of [0, 1]) {
+    for (let i = 0; i <= along; i += 1) {
+      // Cosine spacing packs rows into the rounded ends.
+      const x = start + ((end - start) * (1 - Math.cos((Math.PI * i) / along))) / 2;
+      const width = halfWidth(shape, x);
+      for (let j = 0; j <= across; j += 1) {
+        const y = width * ((2 * j) / across - 1);
+        positions.push(x - petal.r0, y, lift(x, y) - face * THICKNESS);
+      }
+    }
+  }
+
+  const row = across + 1;
+  const back = (along + 1) * row;
+  const top = (i, j) => i * row + j;
+  const bottom = (i, j) => back + i * row + j;
+  const indices = [];
+  for (let i = 0; i < along; i += 1) {
+    for (let j = 0; j < across; j += 1) {
+      indices.push(top(i, j), top(i + 1, j), top(i, j + 1), top(i + 1, j), top(i + 1, j + 1), top(i, j + 1));
+      indices.push(bottom(i, j), bottom(i, j + 1), bottom(i + 1, j), bottom(i + 1, j), bottom(i, j + 1), bottom(i + 1, j + 1));
+    }
+    // Rim along both side edges; the tips close on their own because the width reaches zero.
+    indices.push(top(i, across), top(i + 1, across), bottom(i, across), top(i + 1, across), bottom(i + 1, across), bottom(i, across));
+    indices.push(top(i, 0), bottom(i, 0), top(i + 1, 0), top(i + 1, 0), bottom(i, 0), bottom(i + 1, 0));
+  }
+
+  const geometry = new BufferGeometry();
+  geometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
+  geometry.setIndex(indices);
   geometry.computeVertexNormals();
   return geometry;
 }
