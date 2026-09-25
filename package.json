@@ -4,13 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/build-docs.mjs && node scripts/render-landing.mjs && node scripts/build.mjs",
+    "build": "node scripts/build-docs.mjs && node scripts/render-landing.mjs && node scripts/build-mark.mjs && node scripts/build.mjs",
     "dev": "npm run build && node scripts/serve.mjs dist",
     "build:docs": "node scripts/build-docs.mjs"
   },
   "dependencies": {
     "@walletconnect/ethereum-provider": "^2.25.0",
-    "ethers": "^6.17.0"
+    "ethers": "^6.17.0",
+    "three": "^0.186.1"
   },
   "devDependencies": {
     "esbuild": "^0.25.12"

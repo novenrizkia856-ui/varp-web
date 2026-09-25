@@ -20,6 +20,9 @@ const requiredFiles = [
   "assets/js/emblems.js",
   "assets/js/docs.js",
   "assets/js/landing.js",
+  "assets/js/hero-effects.js",
+  "assets/js/hero-mark-3d.js",
+  "assets/js/varp-mark-geometry.js",
   "assets/js/app.js",
 ];
 
@@ -35,7 +38,10 @@ await cp(resolve(projectRoot, "docs.html"), resolve(outputDirectory, "docs.html"
 await cp(resolve(projectRoot, "assets"), resolve(outputDirectory, "assets"), { recursive: true });
 
 await build({
-  entryPoints: { app: resolve(projectRoot, "assets/js/app.js") },
+  entryPoints: {
+    app: resolve(projectRoot, "assets/js/app.js"),
+    landing: resolve(projectRoot, "assets/js/landing.js"),
+  },
   outdir: resolve(outputDirectory, "assets/js"),
   bundle: true,
   format: "esm",

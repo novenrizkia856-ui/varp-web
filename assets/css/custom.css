@@ -763,8 +763,7 @@ select:focus-visible {
     transition-duration: 0.01ms !important;
   }
 }
-/* The reference uses two independent canvases: a grainy moving light field and
-   a stationary mark whose internal liquid shading moves over time. */
+/* Two independent layers: a grainy moving light field and the 3D burst mark. */
 main > section:first-child {
   isolation: isolate;
   background: #f8f7f5;
@@ -868,38 +867,52 @@ main > section:first-child {
   animation: varp-burst-enter .9s cubic-bezier(.22, 1, .36, 1) .2s both;
 }
 
-.varp-hero-burst img,
-.varp-hero-burst svg,
-.varp-hero-liquid-canvas {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
 .varp-hero-burst > img,
 .varp-hero-burst > svg {
   width: min(59%, 540px);
   height: min(59%, 540px);
-  filter: saturate(1.05) blur(.35px);
-  transition: opacity .24s ease;
+  object-fit: contain;
+  filter: drop-shadow(0 24px 38px rgb(222 57 29 / 22%));
+  transition: opacity .3s ease;
 }
 
-.varp-hero-liquid-canvas {
+.varp-hero-mark-canvas {
   position: absolute;
-  inset: 25%;
-  width: 50%;
-  height: 50%;
+  top: 50%;
+  left: 50%;
   display: block;
   opacity: 0;
-  transition: opacity .24s ease;
+  transform: translate(-50%, -50%);
+  transition: opacity .45s ease;
 }
 
-.varp-hero-burst.is-liquid-ready > img,
-.varp-hero-burst.is-liquid-ready > svg {
+/* A static glow under the model; a CSS filter on the canvas would re-blur every frame. */
+.varp-hero-burst::before {
+  content: "";
+  position: absolute;
+  top: 56%;
+  left: 50%;
+  width: min(52%, 480px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(234 62 22 / 20%), rgb(234 62 22 / 7%) 55%, transparent);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+
+.varp-hero-burst.is-mark-ready::before {
+  opacity: 1;
+}
+
+.varp-hero-burst.is-mark-loading > img,
+.varp-hero-burst.is-mark-loading > svg,
+.varp-hero-burst.is-mark-ready > img,
+.varp-hero-burst.is-mark-ready > svg {
   opacity: 0;
 }
 
-.varp-hero-burst.is-liquid-ready .varp-hero-liquid-canvas {
+.varp-hero-burst.is-mark-ready .varp-hero-mark-canvas {
   opacity: 1;
 }
 
