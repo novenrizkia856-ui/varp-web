@@ -1,31 +1,32 @@
-// Hero mark rendered as a real 3D object. Each petal of the VARP burst is a rounded
-// solid with a lacquered finish. Loaded lazily by hero-effects.js.
+// Hero mark rendered as a real 3D object. Each petal of the VARP burst is a thin,
+// paper like sheet with a satin finish. Loaded lazily by hero-effects.js.
 import {
   AmbientLight,
   Color,
   DirectionalLight,
+  ExtrudeGeometry,
   Group,
-  LatheGeometry,
   Mesh,
   MeshPhysicalMaterial,
   NeutralToneMapping,
   PerspectiveCamera,
   PMREMGenerator,
   Scene,
+  Shape,
   SRGBColorSpace,
-  Vector2,
   WebGLRenderer,
 } from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-import { MARK_PETALS, markBounds, tangentAngle } from "./varp-mark-geometry.js";
+import { MARK_PETALS, markBounds, petalOutline } from "./varp-mark-geometry.js";
 
-// Petal thickness as a share of its width, so each blade reads as a pressed pebble.
-const FLATTEN = 0.34;
+// Sheet thickness in mark units, with a hairline bevel so the edges catch light.
+const THICKNESS = 0.16;
+const BEVEL = 0.05;
 const FOV = 26;
 // Share of the canvas half width the resting mark should fill.
 const FILL = 0.68;
 // Outer ends lift toward the viewer so the burst sits like an opening flower.
-const CUP = 0.2;
+const CUP = 0.26;
 
 const easeOutBack = (t) => {
   const c = 1.45;
@@ -34,26 +35,22 @@ const easeOutBack = (t) => {
 const easeOutCubic = (t) => 1 - (1 - t) ** 3;
 const clamp01 = (value) => Math.min(1, Math.max(0, value));
 
-// The 3D twin of the flat tapered capsule: two spheres joined by their tangent cone,
-// flattened toward the viewer. Its outline seen face on matches the 2D mark exactly.
+// Each petal is the flat mark outline extruded into a thin sheet.
 function petalGeometry(petal) {
-  const { r0, r1, w0, w1 } = petal;
-  const phi = tangentAngle(petal);
-  const profile = [];
-  const arc = (center, radius, from, to, steps) => {
-    for (let step = 0; step <= steps; step += 1) {
-      const angle = from + ((to - from) * step) / steps;
-      profile.push(new Vector2(Math.max(0, radius * Math.sin(angle)), center + radius * Math.cos(angle)));
-    }
-  };
-  arc(r0, w0, Math.PI, phi, 14);
-  arc(r1, w1, phi, 0, 28);
-  const geometry = new LatheGeometry(profile, 72);
-  // Lathe spins around +y; lay the axis along +x, which points out from the hub.
-  geometry.rotateZ(-Math.PI / 2);
-  geometry.scale(1, 1, FLATTEN);
+  const shape = new Shape();
+  petalOutline(petal, BEVEL, 40).forEach(([x, y], index) => (index ? shape.lineTo(x, y) : shape.moveTo(x, y)));
+  shape.closePath();
+  const geometry = new ExtrudeGeometry(shape, {
+    depth: THICKNESS,
+    bevelEnabled: true,
+    bevelThickness: BEVEL,
+    bevelSize: BEVEL,
+    bevelSegments: 2,
+    curveSegments: 1,
+  });
   // Pivot each petal on its root so the bloom and cup rotate from the hub.
-  geometry.translate(-r0, 0, 0);
+  geometry.translate(-petal.r0, 0, -THICKNESS / 2);
+  geometry.computeVertexNormals();
   return geometry;
 }
 
@@ -68,10 +65,10 @@ function buildMark() {
       color: warm.clone().lerp(deep, lean * 0.85),
       emissive: new Color("#ff3300"),
       emissiveIntensity: 0.08,
-      roughness: 0.3,
+      roughness: 0.5,
       metalness: 0,
-      clearcoat: 1,
-      clearcoatRoughness: 0.12,
+      clearcoat: 0.35,
+      clearcoatRoughness: 0.3,
       sheen: 0.35,
       sheenRoughness: 0.4,
       sheenColor: new Color("#ff7a45"),
