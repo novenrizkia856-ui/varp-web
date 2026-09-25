@@ -1,9 +1,9 @@
-// Writes the flat hero burst from the same petal geometry the 3D mark uses. The SVG is
+// Writes the flat hero burst from the same traced outline the 3D mark uses. The SVG is
 // the fallback shown while three.js loads, or when WebGL is unavailable.
 import { writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { markBounds, markOutlines } from "../assets/js/varp-mark-geometry.js";
+import { MARK_PIECES, markBounds } from "../assets/js/varp-mark-geometry.js";
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const target = resolve(projectRoot, "assets/images/varp-hero-burst.svg");
@@ -16,7 +16,7 @@ const offsetX = 400 - ((bounds.minX + bounds.maxX) / 2) * scale;
 const offsetY = 400 - ((bounds.minY + bounds.maxY) / 2) * scale;
 const round = (value) => Math.round(value * 10) / 10;
 
-const paths = markOutlines(0, 28)
+const paths = MARK_PIECES
   .map((points) => {
     const [first, ...rest] = points.map(([x, y]) => `${round(x * scale + offsetX)} ${round(y * scale + offsetY)}`);
     return `    <path d="M${first}L${rest.join("L")}Z"/>`;

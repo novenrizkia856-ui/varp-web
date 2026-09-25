@@ -1,5 +1,7 @@
-// Hero mark rendered as a real 3D object. Each petal of the VARP burst is a thin,
-// curved sheet like a real flower petal, with a satin finish. Loaded lazily by hero-effects.js.
+// Hero mark rendered as a real 3D object: the traced VARP burst as one thin sheet
+// with a satin finish, wrapped around its heart like a flower. A tight wrap reads
+// as a closed bud and a gentle one as an open, cupped bloom. Loaded lazily by
+// hero-effects.js.
 import {
   AmbientLight,
   BufferGeometry,
@@ -13,97 +15,147 @@ import {
   PerspectiveCamera,
   PMREMGenerator,
   Scene,
+  ShapeUtils,
   SRGBColorSpace,
+  Vector2,
   WebGLRenderer,
 } from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-import { MARK_PETALS, markBounds, tangentAngle } from "./varp-mark-geometry.js";
+import { MARK_HEART, MARK_PIECES, markBounds } from "./varp-mark-geometry.js";
 
 // Sheet thickness in mark units.
-const THICKNESS = 0.14;
-// How far a petal curls up toward its tip, as a share of its length.
-const CURL = 0.38;
-// How far the side edges rise above the midrib, as a share of the widest half width.
-const TROUGH = 0.42;
+const THICKNESS = 0.16;
+// Longest triangle edge after subdivision, so the wrap bends smoothly.
+const MAX_EDGE = 0.9;
+// Wrap curvature (1 / sphere radius) for the open bloom and the closed bud.
+const OPEN = 0.026;
+const BUD = 0.15;
 const FOV = 26;
 // Share of the canvas half width the resting mark should fill.
 const FILL = 0.68;
-// Outer ends lift toward the viewer so the burst sits like an opening flower.
-const CUP = 0.16;
 
 const easeOutBack = (t) => {
-  const c = 1.45;
+  const c = 1.2;
   return 1 + (c + 1) * (t - 1) ** 3 + c * (t - 1) ** 2;
 };
 const easeOutCubic = (t) => 1 - (1 - t) ** 3;
 const clamp01 = (value) => Math.min(1, Math.max(0, value));
 
-// Half width of the flat tapered capsule at distance x from the hub.
-function halfWidth({ r0, r1, w0, w1, phi }, x) {
-  const circle = (center, radius) => Math.sqrt(Math.max(0, radius * radius - (x - center) ** 2));
-  const xa = r0 + w0 * Math.cos(phi);
-  const xb = r1 + w1 * Math.cos(phi);
-  const side = x >= xa && x <= xb ? w0 * Math.sin(phi) + ((w1 - w0) * Math.sin(phi) * (x - xa)) / (xb - xa) : 0;
-  return Math.max(circle(r0, w0), circle(r1, w1), side);
-}
+// Outline points relative to the heart, y up, wound counter clockwise.
+const PIECES = MARK_PIECES.map((piece) => {
+  const points = piece.map(([x, y]) => [x - MARK_HEART[0], MARK_HEART[1] - y]);
+  return ShapeUtils.area(points.map(([x, y]) => new Vector2(x, y))) < 0 ? points.reverse() : points;
+});
 
-// A petal is a grid over the flat outline, bent into a curl along its length and a
-// trough across it, then given a thin back face and rim. Seen face on and unbent,
-// its outline matches the 2D mark.
-function petalGeometry(petal) {
-  const shape = { ...petal, phi: tangentAngle(petal) };
-  const start = petal.r0 - petal.w0;
-  const end = petal.r1 + petal.w1;
-  const length = end - petal.r0;
-  const widest = Math.max(petal.w0, petal.w1);
-  const along = 64;
-  const across = 20;
-  const lift = (x, y) => CURL * length * clamp01((x - petal.r0) / length) ** 2 + (TROUGH * y * y) / widest;
+const midpoint = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+const distance = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 
+// Flat sheet: subdivided front and back faces plus a rim. Uniform midpoint
+// subdivision keeps every shared edge conforming, and the rim is split to match,
+// so nothing cracks once the shader bends it.
+function sheetGeometry() {
   const positions = [];
-  for (const face of [0, 1]) {
-    for (let i = 0; i <= along; i += 1) {
-      // Cosine spacing packs rows into the rounded ends.
-      const x = start + ((end - start) * (1 - Math.cos((Math.PI * i) / along))) / 2;
-      const width = halfWidth(shape, x);
-      for (let j = 0; j <= across; j += 1) {
-        const y = width * ((2 * j) / across - 1);
-        positions.push(x - petal.r0, y, lift(x, y) - face * THICKNESS);
-      }
-    }
-  }
+  const normals = [];
+  const colors = [];
+  const warm = new Color("#ff5a0a");
+  const deep = new Color("#ef2a0a");
+  const shade = new Color();
+  const push = ([x, y], z, normal) => {
+    positions.push(x, y, z);
+    normals.push(...normal);
+    // Upper right runs orange, the heavy lower left blades a deeper red.
+    shade.copy(warm).lerp(deep, clamp01(0.45 - (x + y) / 28));
+    colors.push(shade.r, shade.g, shade.b);
+  };
 
-  const row = across + 1;
-  const back = (along + 1) * row;
-  const top = (i, j) => i * row + j;
-  const bottom = (i, j) => back + i * row + j;
-  const indices = [];
-  for (let i = 0; i < along; i += 1) {
-    for (let j = 0; j < across; j += 1) {
-      indices.push(top(i, j), top(i + 1, j), top(i, j + 1), top(i + 1, j), top(i + 1, j + 1), top(i, j + 1));
-      indices.push(bottom(i, j), bottom(i, j + 1), bottom(i + 1, j), bottom(i + 1, j), bottom(i, j + 1), bottom(i + 1, j + 1));
+  for (const piece of PIECES) {
+    const faces = ShapeUtils.triangulateShape(piece.map(([x, y]) => new Vector2(x, y)), []);
+    let triangles = faces.map((face) => face.map((index) => piece[index]));
+    const longest = Math.max(...triangles.flatMap(([a, b, c]) => [distance(a, b), distance(b, c), distance(c, a)]));
+    const levels = Math.max(0, Math.ceil(Math.log2(longest / MAX_EDGE)));
+    for (let level = 0; level < levels; level += 1) {
+      triangles = triangles.flatMap(([a, b, c]) => {
+        const ab = midpoint(a, b);
+        const bc = midpoint(b, c);
+        const ca = midpoint(c, a);
+        return [[a, ab, ca], [ab, b, bc], [ca, bc, c], [ab, bc, ca]];
+      });
     }
-    // Rim along both side edges; the tips close on their own because the width reaches zero.
-    indices.push(top(i, across), top(i + 1, across), bottom(i, across), top(i + 1, across), bottom(i + 1, across), bottom(i, across));
-    indices.push(top(i, 0), bottom(i, 0), top(i + 1, 0), top(i + 1, 0), bottom(i, 0), bottom(i + 1, 0));
+    const half = THICKNESS / 2;
+    for (let [a, b, c] of triangles) {
+      if ((b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]) < 0) [b, c] = [c, b];
+      [a, b, c].forEach((point) => push(point, half, [0, 0, 1]));
+      [a, c, b].forEach((point) => push(point, -half, [0, 0, -1]));
+    }
+
+    const splits = 2 ** levels;
+    const rim = piece.flatMap((point, index) => {
+      const next = piece[(index + 1) % piece.length];
+      return Array.from({ length: splits }, (_, step) => [
+        point[0] + ((next[0] - point[0]) * step) / splits,
+        point[1] + ((next[1] - point[1]) * step) / splits,
+      ]);
+    });
+    rim.forEach((point, index) => {
+      const next = rim[(index + 1) % rim.length];
+      const length = distance(point, next) || 1;
+      const outward = [(next[1] - point[1]) / length, (point[0] - next[0]) / length, 0];
+      push(point, half, outward);
+      push(point, -half, outward);
+      push(next, half, outward);
+      push(next, half, outward);
+      push(point, -half, outward);
+      push(next, -half, outward);
+    });
   }
 
   const geometry = new BufferGeometry();
   geometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
-  geometry.setIndex(indices);
-  geometry.computeVertexNormals();
+  geometry.setAttribute("normal", new Float32BufferAttribute(normals, 3));
+  geometry.setAttribute("color", new Float32BufferAttribute(colors, 3));
   return geometry;
 }
 
+// Wraps the flat sheet onto a sphere of curvature uCurve that touches it at the
+// heart, bowing toward the viewer. Distances from the heart are preserved, so the
+// petals fold rather than stretch.
+function wrapMaterial(material, curve) {
+  material.onBeforeCompile = (shader) => {
+    shader.uniforms.uCurve = curve;
+    shader.vertexShader = `uniform float uCurve;\n${shader.vertexShader}`
+      .replace(
+        "#include <beginnormal_vertex>",
+        `#include <beginnormal_vertex>
+        {
+          float r = length(position.xy);
+          vec2 dir = r > 1e-5 ? position.xy / r : vec2(1.0, 0.0);
+          float a = r * uCurve;
+          float nr = dot(objectNormal.xy, dir);
+          vec2 nt = objectNormal.xy - nr * dir;
+          objectNormal = vec3(nt + (nr * cos(a) - objectNormal.z * sin(a)) * dir, nr * sin(a) + objectNormal.z * cos(a));
+        }`,
+      )
+      .replace(
+        "#include <begin_vertex>",
+        `#include <begin_vertex>
+        {
+          float r = length(position.xy);
+          vec2 dir = r > 1e-5 ? position.xy / r : vec2(1.0, 0.0);
+          float a = r * uCurve;
+          float sinc = a > 1e-4 ? sin(a) / a : 1.0;
+          float lift = a > 1e-4 ? (1.0 - cos(a)) / a : 0.0;
+          transformed = vec3(dir * (r * sinc - position.z * sin(a)), r * lift + position.z * cos(a));
+        }`,
+      );
+  };
+  return material;
+}
+
 function buildMark() {
-  const warm = new Color("#ff5a0a");
-  const deep = new Color("#f02a08");
-  const mark = new Group();
-  const petals = MARK_PETALS.map((petal, index) => {
-    // Upper petals catch more orange, the heavy lower left blades run deeper red.
-    const lean = clamp01((Math.sin((petal.angle * Math.PI) / 180) + 1) / 2);
-    const material = new MeshPhysicalMaterial({
-      color: warm.clone().lerp(deep, lean * 0.85),
+  const curve = { value: BUD };
+  const material = wrapMaterial(
+    new MeshPhysicalMaterial({
+      vertexColors: true,
       emissive: new Color("#ff3300"),
       emissiveIntensity: 0.08,
       roughness: 0.5,
@@ -113,29 +165,23 @@ function buildMark() {
       sheen: 0.35,
       sheenRoughness: 0.4,
       sheenColor: new Color("#ff7a45"),
-    });
-    const mesh = new Mesh(petalGeometry(petal), material);
-    const spin = new Group();
-    // Mark space is y down; world space is y up.
-    spin.rotation.z = (-petal.angle * Math.PI) / 180;
-    const hinge = new Group();
-    hinge.position.x = petal.r0;
-    hinge.add(mesh);
-    spin.add(hinge);
-    mark.add(spin);
-    return { hinge, mesh, index, phase: index * 0.83 };
-  });
+    }),
+    curve,
+  );
+  const mesh = new Mesh(sheetGeometry(), material);
+  // The shader moves vertices, so the flat bounding sphere cannot be trusted.
+  mesh.frustumCulled = false;
 
-  // Centre the burst on its bounding box instead of the off centre hub.
+  // Centre the burst on its bounding box instead of the off centre heart.
   const bounds = markBounds();
-  const centerX = (bounds.minX + bounds.maxX) / 2;
-  const centerY = (bounds.minY + bounds.maxY) / 2;
-  mark.position.set(-centerX, centerY, 0);
+  const mark = new Group();
+  mark.add(mesh);
+  mark.position.set(MARK_HEART[0] - (bounds.minX + bounds.maxX) / 2, (bounds.minY + bounds.maxY) / 2 - MARK_HEART[1], 0);
   const radius = Math.max(bounds.maxX - bounds.minX, bounds.maxY - bounds.minY) / 2;
 
   const pivot = new Group();
   pivot.add(mark);
-  return { pivot, petals, radius };
+  return { pivot, mesh, curve, radius };
 }
 
 export function mountHeroMark(host, { reduceMotion }) {
@@ -151,7 +197,7 @@ export function mountHeroMark(host, { reduceMotion }) {
   const scene = new Scene();
   const pmrem = new PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.035).texture;
-  // A dim studio keeps reflections on the lacquer without bleaching the red.
+  // A dim studio keeps reflections on the sheet without bleaching the red.
   scene.environmentIntensity = 0.3;
   pmrem.dispose();
 
@@ -164,7 +210,7 @@ export function mountHeroMark(host, { reduceMotion }) {
   fill.position.set(0, -24, 18);
   scene.add(key, rim, fill, new AmbientLight("#ffffff", 0.1));
 
-  const { pivot, petals, radius } = buildMark();
+  const { pivot, mesh, curve, radius } = buildMark();
   scene.add(pivot);
 
   const camera = new PerspectiveCamera(FOV, 1, 1, 400);
@@ -189,15 +235,11 @@ export function mountHeroMark(host, { reduceMotion }) {
     const still = reduceMotion.matches;
     const t = still ? 6 : (now - start) / 1000;
 
-    petals.forEach(({ hinge, mesh, index, phase }) => {
-      // Staggered bloom: petals unfold from closed buds to an open, cupped burst.
-      const local = still ? 1 : clamp01((t - 0.12 - index * 0.075) / 1.25);
-      const open = easeOutBack(local);
-      const breathe = still ? 0 : Math.sin(t * 1.05 + phase) * 0.035;
-      hinge.rotation.y = -(CUP + breathe) - (1 - open) * 1.35;
-      const scale = 0.35 + 0.65 * easeOutCubic(local);
-      mesh.scale.setScalar(scale);
-    });
+    // Bloom: the bud relaxes into the open cup, then the petals breathe gently.
+    const bloom = still ? 1 : easeOutBack(clamp01((t - 0.1) / 1.6));
+    const breathe = still ? 0 : Math.sin(t * 1.05) * 0.06;
+    curve.value = BUD + (OPEN * (1 + breathe) - BUD) * bloom;
+    mesh.scale.setScalar(still ? 1 : 0.55 + 0.45 * easeOutCubic(clamp01(t / 1.2)));
 
     if (!still) {
       pointer.x += (pointer.tx - pointer.x) * 0.045;
@@ -205,8 +247,8 @@ export function mountHeroMark(host, { reduceMotion }) {
     }
     const intro = still ? 1 : easeOutCubic(clamp01(t / 1.6));
     pivot.rotation.set(
-      0.16 + Math.sin(t * 0.37 + 1) * 0.07 + pointer.y * 0.22,
-      -0.3 + Math.sin(t * 0.45) * 0.2 + pointer.x * 0.34,
+      0.14 + Math.sin(t * 0.37 + 1) * 0.06 + pointer.y * 0.22,
+      -0.22 + Math.sin(t * 0.45) * 0.16 + pointer.x * 0.34,
       (1 - intro) * -0.7 + Math.sin(t * 0.21) * 0.04,
     );
     pivot.position.y = still ? 0 : Math.sin(t * 0.8) * 0.45;

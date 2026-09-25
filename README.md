@@ -35,7 +35,7 @@ Open `http://127.0.0.1:4174/app.html`.
 - Lazy-loaded wallet bundle and production security headers for Vercel
 - Featured Rights Profiles (`assets/js/profiles-data.js`) open at `app.html?profile=<id>` with rights, sources, history, Rights Diff, and a one-click handoff to the Publisher Console
 - Documentation at `docs.html`, generated from `content/docs/` by `scripts/build-docs.mjs`
-- 3D hero mark (`assets/js/hero-mark-3d.js`, three.js) drawn as thin, curled petal sheets from the petal geometry in `assets/js/varp-mark-geometry.js`; it loads lazily on desktop, and `scripts/build-mark.mjs` writes the flat SVG fallback from the same geometry
+- 3D hero mark (`assets/js/hero-mark-3d.js`, three.js) a thin sheet wrapped like a flower, built from the traced outline in `assets/js/varp-mark-geometry.js`; it loads lazily on desktop, and `scripts/build-mark.mjs` writes the flat SVG fallback from the same geometry
 
 ## Content scripts
 

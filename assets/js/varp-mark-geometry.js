@@ -1,56 +1,52 @@
-// The VARP burst, fitted to assets/images/varp-mark.webp in 64 px mark units (y down).
-// Each petal is a tapered capsule: a circle of radius w0 at distance r0 from the hub,
-// joined by its outer tangents to a circle of radius w1 at distance r1.
-// Angles are degrees measured from +x, clockwise on screen.
-export const MARK_HUB = [37.26, 30.34];
-
-export const MARK_PETALS = [
-  { angle: -126.8, r0: 4.79, r1: 12.87, w0: 1.07, w1: 2.14 },
-  { angle: -93.0, r0: 3.15, r1: 8.94, w0: 0.65, w1: 1.59 },
-  { angle: -49.5, r0: 2.32, r1: 5.66, w0: 1.38, w1: 1.45 },
-  { angle: 11.9, r0: 1.83, r1: 5.46, w0: 0.46, w1: 1.59 },
-  { angle: 56.6, r0: 3.99, r1: 9.16, w0: 0.89, w1: 1.6 },
-  { angle: 91.1, r0: 3.96, r1: 12.93, w0: 0.97, w1: 2.26 },
-  { angle: 135.3, r0: 2.64, r1: 14.07, w0: 1.31, w1: 3.55 },
-  { angle: -168.8, r0: 3.22, r1: 14.18, w0: 0.96, w1: 3.54 },
+// The VARP burst traced from a photo of the mark, corrected for perspective by
+// aligning it to assets/images/varp-mark.webp. Units are that image's 64 px grid, y down.
+// Four pieces: the upper left blade, the main body (left, lower left and bottom
+// blades joined at the heart), the right comb, and the lower right wedge.
+export const MARK_PIECES = [
+  [
+    [21.67, 24.08], [21.35, 24.45], [21.11, 24.99], [20.09, 28.86], [20.11, 29.38],
+    [20.25, 29.81], [20.57, 30.24], [21.03, 30.59], [21.73, 30.85], [22.77, 30.93],
+    [32.98, 30.97], [33.38, 31.09], [33.56, 31.34], [33.44, 31.71], [32.94, 32.13],
+    [24.78, 37.61], [24.06, 38.17], [23.51, 38.85], [23.27, 39.55], [23.3, 40.29],
+    [23.7, 40.99], [25.52, 42.7], [27.11, 44.03], [27.51, 44.19], [27.89, 44.24],
+    [28.38, 44.15], [28.83, 43.96], [29.29, 43.63], [29.76, 43.1], [35.15, 34.52],
+    [35.38, 34.25], [35.64, 34.18], [35.85, 34.38], [35.89, 34.83], [35.07, 41.57],
+    [34.81, 44.21], [34.87, 44.82], [35.04, 45.15], [35.29, 45.38], [35.58, 45.5],
+    [35.95, 45.5], [37.97, 44.68], [38.7, 44.24], [39.01, 43.92], [39.23, 43.55],
+    [39.35, 42.74], [38.98, 39.68], [38.39, 36.22], [37.94, 34.67], [37.22, 32.93],
+    [36.24, 31.28], [35.45, 30.29], [34.21, 29.06], [33.07, 28.2], [31.8, 27.41],
+    [30.09, 26.55], [23.72, 23.83], [23.12, 23.72], [22.52, 23.73], [22.05, 23.85],
+  ],
+  [
+    [35.42, 19.87], [35.18, 20.17], [35.13, 20.66], [35.67, 24.63], [36.28, 26.66],
+    [37.37, 28.88], [38.07, 29.89], [38.9, 30.9], [40.2, 32.06], [40.96, 32.5],
+    [42.2, 33.02], [43.13, 33.31], [43.55, 33.25], [43.81, 32.88], [43.84, 32.21],
+    [43.6, 30.64], [43.31, 30.11], [43.02, 29.91], [42.65, 29.81], [40.18, 29.66],
+    [39.93, 29.56], [39.82, 29.41], [39.84, 29.21], [39.99, 29], [41.78, 27.66],
+    [42.21, 27.11], [42.27, 26.8], [42.18, 26.37], [41.49, 25.06], [40.9, 24.37],
+    [40.62, 24.26], [40.34, 24.32], [39.96, 24.68], [38.57, 26.71], [38.33, 26.89],
+    [38.14, 26.86], [38.05, 26.67], [38.04, 26.38], [38.42, 22.64], [38.31, 21.68],
+    [37.87, 21.06], [36.63, 20.19], [35.88, 19.82],
+  ],
+  [
+    [27.31, 19.06], [27.11, 19.34], [27.06, 19.73], [27.17, 20.19], [27.4, 20.6],
+    [33.34, 27.19], [33.86, 27.62], [34.24, 27.74], [34.67, 27.65], [35.19, 27.31],
+    [35.44, 26.98], [35.55, 26.65], [35.52, 26.29], [35.33, 25.76], [31.9, 19.47],
+    [31.51, 18.96], [30.92, 18.56], [30.19, 18.47], [28.22, 18.72], [27.6, 18.89],
+  ],
+  [
+    [39.26, 32.5], [38.86, 32.78], [38.53, 33.32], [38.45, 33.79], [38.56, 34.28],
+    [41.38, 39.49], [41.81, 39.94], [42.02, 40.02], [42.24, 39.99], [42.5, 39.8],
+    [42.7, 39.52], [43.28, 38.01], [43.43, 37.22], [43.31, 36.62], [42.75, 35.76],
+    [40.16, 32.9], [39.65, 32.51],
+  ],
 ];
 
-// Angle of the tangent points on each end circle, measured from the petal axis.
-export function tangentAngle({ r0, r1, w0, w1 }) {
-  return Math.PI / 2 + Math.asin((w1 - w0) / (r1 - r0));
-}
+// Where the blades converge; the 3D mark bends around this point like a flower.
+export const MARK_HEART = [36, 30.2];
 
-// Outline of one petal in its own frame: x runs out from the hub along the petal.
-// `inset` shrinks both end circles, which leaves room for a 3D bevel.
-export function petalOutline(petal, inset = 0, steps = 20) {
-  const w0 = Math.max(0.1, petal.w0 - inset);
-  const w1 = Math.max(0.1, petal.w1 - inset);
-  const phi = tangentAngle({ ...petal, w0, w1 });
-  const points = [];
-  for (let step = 0; step <= steps; step += 1) {
-    const angle = -phi + (2 * phi * step) / steps;
-    points.push([petal.r1 + w1 * Math.cos(angle), w1 * Math.sin(angle)]);
-  }
-  for (let step = 0; step <= steps; step += 1) {
-    const angle = phi + (2 * (Math.PI - phi) * step) / steps;
-    points.push([petal.r0 + w0 * Math.cos(angle), w0 * Math.sin(angle)]);
-  }
-  return points;
-}
-
-// Every petal outline in mark space, relative to the hub, y down.
-export function markOutlines(inset = 0, steps = 20) {
-  return MARK_PETALS.map((petal) => {
-    const radians = (petal.angle * Math.PI) / 180;
-    const cos = Math.cos(radians);
-    const sin = Math.sin(radians);
-    return petalOutline(petal, inset, steps).map(([x, y]) => [x * cos - y * sin, x * sin + y * cos]);
-  });
-}
-
-// Bounding box of the whole mark relative to the hub.
 export function markBounds() {
-  const points = markOutlines().flat();
+  const points = MARK_PIECES.flat();
   const xs = points.map(([x]) => x);
   const ys = points.map(([, y]) => y);
   return { minX: Math.min(...xs), maxX: Math.max(...xs), minY: Math.min(...ys), maxY: Math.max(...ys) };
